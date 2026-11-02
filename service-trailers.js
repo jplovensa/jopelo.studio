@@ -89,7 +89,7 @@ export function initServiceTrailers() {
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.previewService === id)));
     document.querySelector('#service-category').replaceChildren(
       document.createTextNode(`${film.category} / JOPELO CHATS `),
-      Object.assign(document.createElement('span'), { textContent: '00:14' }),
+      Object.assign(document.createElement('span'), { textContent: '00:20' }),
     );
     const title = document.querySelector('#service-title');
     title.replaceChildren(document.createTextNode(film.name), Object.assign(document.createElement('span'), { textContent: '.' }));
@@ -97,6 +97,14 @@ export function initServiceTrailers() {
     document.querySelector('#service-scope').textContent = film.scope;
     document.querySelector('#service-inquire').dataset.service = film.name;
     document.querySelector('#trailer-dialog-inquire').dataset.service = film.name;
+    const reveal = serviceChats[id].reveal;
+    const workLink = document.querySelector('#service-work-link');
+    workLink.textContent = `View the work: ${reveal.title}`;
+    workLink.href = reveal.href;
+    if (reveal.href.startsWith('https:')) { workLink.target = '_blank'; workLink.rel = 'noopener noreferrer'; }
+    else { workLink.removeAttribute('target'); workLink.removeAttribute('rel'); }
+    document.querySelector('#service-reveal-detail').textContent = reveal.detail;
+    document.querySelector('#trailer-reveal-description').textContent = `After the studio card: ${reveal.title} — ${reveal.detail}.`;
     const messages = serviceChats[id].messages;
     for (const list of document.querySelectorAll('[data-chat-transcript]')) {
       list.replaceChildren(...messages.map(message => {
@@ -154,7 +162,7 @@ export function initServiceTrailers() {
     fullVideo.muted = false;
     fullVideo.volume = .65;
     fullVideo.load();
-    fullStatus.textContent = '14 seconds. Real keyboard audio. Ends with JOPELO STUDIO PRESENTS.';
+    fullStatus.textContent = '20 seconds. Chat. JOPELO STUDIO PRESENTS. The work.';
     if (!dialog.open) dialog.showModal();
     fullVideo.play().catch(() => { fullStatus.textContent = 'Press play to start the trailer.'; });
   });

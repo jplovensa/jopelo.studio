@@ -1,4 +1,4 @@
-"""Render JOPELO's text-message service trailers; no imagery or network needed.
+"""Render JOPELO's chat trailers and portfolio reveals from local media; no network needed.
 
 Requires Python 3, Pillow, NumPy and FFmpeg (libx264/AAC).
 Run: python tools/render-service-trailers.py [optional service IDs]
@@ -13,17 +13,26 @@ import subprocess
 import sys
 import wave
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'assets/services'
 CACHE = ROOT / '.cache/service-chats'
 CACHE.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
-FPS, WIDTH, HEIGHT, DURATION, RATE = 24, 1280, 720, 14, 48000
+FPS, WIDTH, HEIGHT, DURATION, RATE = 24, 1280, 720, 20, 48000
 CREDIT_START = 12
+REVEAL_START = 14
 TYPE_RATE = 44  # The same timing drives text reveal and keyboard foley.
 FILMS = json.loads((ROOT/'service-chat-content.js').read_text().removeprefix('export default ').strip().removesuffix(';'))
+for film_id, film in FILMS.items():film['id']=film_id
+REVEAL_SHOTS = {
+    'strategy': [{'video':'assets/secha-trailer.mp4','seek':2,'duration':6}],
+    'web': [{'video':'assets/fjall-trailer.mp4','seek':2,'duration':3}, {'video':'assets/secha-trailer.mp4','seek':3,'duration':3}],
+    'brand': [{'image':'assets/services/reveals/jopelo-identity.png','duration':6}],
+    'styling': [{'image':'assets/styling/warm-modern-room.webp','duration':3}, {'image':'assets/styling/soft-contemporary-room.webp','duration':3}],
+    'ventures': [{'image':'assets/services/reveals/garuda-spark.webp','duration':6}],
+}
 FONT = ROOT/'assets/inter-regular.ttf'
 BOLD = ROOT/'assets/inter-black.ttf'
 PAPER, GREEN, INK = '#ebe8e0', '#183e33', '#16291f'
@@ -121,7 +130,53 @@ def studio_credit(film, t):
     return im
 
 
+def prepare_work_reveal(film_id):
+    for index,shot in enumerate(REVEAL_SHOTS[film_id]):
+        if 'video' not in shot:continue
+        directory=CACHE/(film_id+'-reveal-'+str(index))
+        directory.mkdir(exist_ok=True)
+        subprocess.run(['ffmpeg','-v','error','-y','-ss',str(shot.get('seek',0)),'-i',str(ROOT/shot['video']),'-t',str(shot['duration']),'-vf',f'fps={FPS},scale={WIDTH}:{HEIGHT}', '-q:v','2',str(directory/'%04d.jpg')],check=True)
+
+
+def work_reveal(film, t):
+    local=t-REVEAL_START
+    index=0
+    shots=REVEAL_SHOTS[film['id']]
+    while index<len(shots)-1 and local>=shots[index]['duration']:
+        local-=shots[index]['duration'];index+=1
+    shot=shots[index]
+    if 'video' in shot:
+        number=min(int(shot['duration']*FPS),int(local*FPS)+1)
+        path=CACHE/(film['id']+'-reveal-'+str(index))/f'{number:04d}.jpg'
+        with Image.open(path) as source:im=source.convert('RGB').resize((WIDTH,HEIGHT))
+    else:
+        with Image.open(ROOT/shot['image']) as source:
+            # A very small push into existing portfolio material; no generated scenes.
+            scale=1+.018*min(1,local/shot['duration'])
+            im=ImageOps.fit(source.convert('RGB'),(round(WIDTH*scale),round(HEIGHT*scale)))
+            left=(im.width-WIDTH)//2;top=(im.height-HEIGHT)//2
+            im=im.crop((left,top,left+WIDTH,top+HEIGHT))
+    d=ImageDraw.Draw(im)
+    d.rectangle((0,0,WIDTH,48),fill='#101010')
+    d.text((38,12),'THE WORK / '+film['category'],font=FONTS[20],fill=WHITE)
+    stamp='JOPELO STUDIO'
+    d.text((WIDTH-38-d.textlength(stamp,font=FONTS[20]),12),stamp,font=FONTS[20],fill=WHITE)
+    # Keep the project title and attribution above the native control overlay.
+    d.rectangle((0,526,WIDTH,HEIGHT),fill='#101010')
+    reveal=film['reveal']
+    d.text((38,541),reveal['title'],font=HEAVY[36],fill=WHITE)
+    detail=reveal['detail']
+    if film['id']=='web':detail=('Fjäll Group' if index==0 else 'SECHA')+' / live website'
+    elif film['id']=='styling':detail=('Warm Modern' if index==0 else 'Soft Contemporary')+' / Studio+ interior concept'
+    d.text((38,594),detail,font=FONTS[28],fill='#c8c2b8')
+    if t<REVEAL_START+.16:
+        black=Image.new('RGB',(WIDTH,HEIGHT),'#101010')
+        im=Image.blend(black,im,max(0,(t-REVEAL_START)/.16))
+    return im
+
+
 def frame(film, t):
+    if t >= REVEAL_START:return work_reveal(film,t)
     if t >= CREDIT_START:return studio_credit(film,t)
     im = base(film, t)
     d=ImageDraw.Draw(im)
@@ -194,6 +249,7 @@ def sound_design(film_id):
 
 def render(film_id):
     film=FILMS[film_id]
+    prepare_work_reveal(film_id)
     score=sound_design(film_id)
     cmd=['ffmpeg','-hide_banner','-loglevel','error','-y','-f','rawvideo','-pix_fmt','rgb24','-s',f'{WIDTH}x{HEIGHT}','-r',str(FPS),'-i','pipe:0','-i',str(score),'-map','0:v','-map','1:a','-c:v','libx264','-preset','fast','-crf','19','-pix_fmt','yuv420p','-threads','2','-c:a','aac','-b:a','128k','-t',str(DURATION),'-movflags','+faststart',str(CACHE/(film_id+'-render.mp4'))]
     process=subprocess.Popen(cmd,stdin=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -215,13 +271,15 @@ def main():
     with ThreadPoolExecutor(max_workers=2) as pool:
         list(pool.map(render,ids))
     provenance={
-        'format':'14 seconds / 1280×720 / 24fps / H.264 + AAC stereo',
-        'direction':'Original text-only messaging motion graphics. Fictional deadpan exchanges with a persistent service title and deliverables strip. No photographic imagery.',
+        'format':'20 seconds / 1280×720 / 24fps / H.264 + AAC stereo',
+        'direction':'Deadpan chat motion graphics, JOPELO STUDIO PRESENTS card, then existing portfolio work. Studio+ visuals remain labelled as interior concepts.',
         'copy':'../../service-chat-content.js',
         'renderer':'../../tools/render-service-trailers.py',
         'sound':'Physical keyboard recording by russiandoll (PDSounds 555), public domain via Wikimedia Commons. Edited into natural typing bursts; no synthesized keyboard clicks.',
         'sound_provenance':'audio/source.json',
-        'ending':'12–14 seconds: JOPELO STUDIO PRESENTS, followed by the selected service title.',
+        'ending':'12–14 seconds: JOPELO STUDIO PRESENTS; 14–20 seconds: selected portfolio work reveal.',
+        'reveal_sources':REVEAL_SHOTS,
+        'reveal_attribution':{k:v['reveal'] for k,v in FILMS.items()},
         'fonts':['../inter-regular.ttf','../inter-black.ttf'],
         'films':{k:{'name':v['name'],'file':k+'.mp4','poster':k+'.jpg'}for k,v in FILMS.items()},
         'icon':{'name':'Bootstrap Icons play-fill','source':'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/play-fill.svg','license':'bootstrap-icons-LICENSE.txt'}

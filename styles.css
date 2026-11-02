@@ -242,3 +242,10 @@ body:has(#trailer-dialog[open]) { overflow: hidden; }
   .capabilities .service-intro { font-size: 13px; margin-top: 14px; }
   .trailer-chat-transcript { margin-inline: 16px; }
 }
+
+.service-work { margin-top: 22px; border-top: 1px solid #393632; padding-top: 16px; }
+.service-work a { color: var(--paper); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.service-work a:hover { color: #d5f6bf; }
+.service-work p { font-size: 11px; color: #b7b2aa; margin: 8px 0 0; line-height: 1.6; }
+.trailer-reveal-description { margin: 0 24px 20px; color: #c8c2b8; font-size: 12px; line-height: 1.6; }
+@media (max-width: 640px) { .trailer-reveal-description { margin-inline: 16px; } }

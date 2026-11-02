@@ -1,0 +1,11 @@
+{
+  "jopelo-identity.png": {
+    "source": "Local JOPELO site, .cinematic-hero, captured in Chromium at 1440px with reduced motion",
+    "classification": "Studio identity and implemented website"
+  },
+  "garuda-spark.webp": {
+    "source": "https://www.fjallgroup.com/assets/retrofit-interior.webp",
+    "classification": "Fj\u00e4ll Group Garuda Spark project reference; no claim of personal architectural authorship"
+  },
+  "other_sources": "See assets/media-sources.json for live-site recordings and Studio+ interior-concept attribution"
+}

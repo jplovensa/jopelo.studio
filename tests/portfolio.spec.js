@@ -282,7 +282,7 @@ test('five actual service trailers decode, play with sound and stop on close', a
     await expect(page.locator('#trailer-dialog')).toBeVisible();
     await expect(page.locator('#trailer-dialog-title')).toHaveText(name);
     await expect.poll(() => page.locator('#trailer-video').evaluate(v => v.readyState)).toBeGreaterThanOrEqual(2);
-    expect(await page.locator('#trailer-video').evaluate(v => Math.round(v.duration))).toBe(14);
+    expect(await page.locator('#trailer-video').evaluate(v => Math.round(v.duration))).toBe(20);
     expect(await page.locator('#trailer-video').evaluate(v => v.videoWidth)).toBe(1280);
     expect(await page.locator('#trailer-video').evaluate(v => v.videoHeight)).toBe(720);
     expect(await page.locator('#trailer-video').evaluate(v => v.muted)).toBe(false);
@@ -297,6 +297,20 @@ test('five actual service trailers decode, play with sound and stop on close', a
     });
     expect(endPixel.every(channel => channel < 25)).toBeTruthy();
     await expect(page.locator('#trailer-dialog-status')).toContainText('JOPELO STUDIO PRESENTS');
+    await page.locator('#trailer-video').evaluate(v => { v.currentTime = 18.2; });
+    await expect.poll(() => page.locator('#trailer-video').evaluate(v => !v.seeking && v.readyState >= 2)).toBeTruthy();
+    const revealFrame = await page.locator('#trailer-video').evaluate(v => {
+      const canvas = document.createElement('canvas'); canvas.width = v.videoWidth; canvas.height = v.videoHeight;
+      const ctx = canvas.getContext('2d'); ctx.drawImage(v, 0, 0);
+      const data = ctx.getImageData(100, 100, 1000, 350).data;
+      let bright = 0; for (let i=0; i<data.length; i+=4) if(data[i]+data[i+1]+data[i+2]>180) bright++;
+      return bright/(data.length/4);
+    });
+    expect(revealFrame).toBeGreaterThan(.2);
+    await expect(page.locator('#trailer-reveal-description')).not.toBeEmpty();
+    if (name === 'Styling your space') await expect(page.locator('#trailer-reveal-description')).toContainText('concepts');
+    await page.locator('#trailer-dialog').screenshot({ path: `artifacts/service-work-${name.split(' ')[0].toLowerCase()}-${testInfo.project.name}.png` });
+
     if (name === 'Web experiences') {
       await page.locator('#trailer-video').evaluate(v => { v.pause(); v.currentTime = 11.4; });
       await expect.poll(() => page.locator('#trailer-video').evaluate(v => !v.seeking && v.readyState >= 2)).toBeTruthy();

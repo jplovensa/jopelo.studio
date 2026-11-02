@@ -117,11 +117,11 @@
     "provenance": "services/sources.json",
     "renderer": "../tools/render-service-trailers.py",
     "copy": "../service-chat-content.js",
-    "duration_seconds": 14,
+    "duration_seconds": 20,
     "count": 5,
     "sound": "Real computer-keyboard recording by russiandoll, public domain via PDSounds / Wikimedia Commons; see services/audio/source.json",
-    "imagery": "Text-only motion graphics; no photographic or generated imagery",
+    "imagery": "Existing website recordings, JOPELO identity capture, Fjäll Garuda Spark project reference and clearly labelled Studio+ concepts",
     "conversation": "Fictional deadpan chats, persistent service names and deliverables",
-    "ending": "JOPELO STUDIO PRESENTS closing title card at 12–14 seconds"
+    "ending": "12–14s JOPELO STUDIO PRESENTS; 14–20s selected portfolio work reveal"
   }
 }

@@ -2,24 +2,31 @@
 
 final result: passed
 
-## Current scope: actual keyboard audio and movie closing card
+## Current scope: portfolio work after every studio card
 
-All five service trailers now use a recording of a physical computer keyboard rather than synthesized clicks. Source: “Computer keyboard” by russiandoll, PDSounds record 555, recorded in London in May 2008 and released into the public domain by the author. The unmodified 83.72-second recording and source/license evidence are checked into `assets/services/audio/`. Natural excerpts are trimmed around each typing burst, high-pass filtered at 100 Hz, faded and normalized. No synthesized keyboard clicks or message pops remain.
+Every service movie now runs for 20 seconds: 12 seconds of deadpan chat with the real keyboard recording, 2 seconds of JOPELO STUDIO PRESENTS, and 6 seconds revealing existing portfolio work. No new photographic scenes are generated. The reveal uses full-frame existing media, a small push on stills, a brief fade from the title card, and captions above the native controls.
 
-Every movie retains its 12-second chat, then holds a black studio card for two seconds. The card fades in over 0.24 seconds and reads “A JOPELO ORIGINAL / JOPELO STUDIO / PRESENTS”, followed by the selected service and “unserious chat. serious work.” All titles remain within the native video controls' safe area. The final duration is 14 seconds. The ending is quiet.
+Reveal mapping:
 
-The service title, deliverables strip, first-person deadpan messages, readable HTML transcripts and muted previews remain. Player metadata and accessibility status now identify the 14-second duration, real keyboard audio and closing title.
+| Service | Work shown | Classification |
+| --- | --- | --- |
+| Strategy & storytelling | SECHA live website proposition | Existing product story; no fabricated strategy deck |
+| Web experiences | Fjäll Group and SECHA website recordings | Live website work |
+| Brand worlds | Actual JOPELO hero capture | Studio identity and implemented website |
+| Styling your space | Warm Modern and Soft Contemporary | SECHA Studio+ interior concepts, labelled in-frame |
+| Ventures & real estate | Garuda Spark image from Fjäll Group | Portfolio project reference, not a claim of personal architectural authorship |
 
-## Evidence and verification
+Each service selection also updates a source link and an accessible reveal description. Studio+ is linked directly and remains labelled as concepts. Real keyboard audio and the full chat timing are preserved; the title and work reveal remain quiet.
 
-- Final actual encoded frames from all five movies at 1.2, 3.3, 10.5 and 13.3 seconds: `artifacts/service-film-contact-sheet.jpg`.
-- New ending in the browser: `artifacts/service-studio-credit-desktop.png` and `artifacts/service-studio-credit-mobile.png`.
-- Section captures: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Chat-state dialogs and full-page regression captures are retained separately.
-- All five files decode as 14-second 1280 × 720 H.264 with stereo AAC. Decoded peaks range from 0.647 to 0.740; chat RMS ranges from 0.026 to 0.053. No clipping; the entire studio-credit interval is silent.
-- 29 checks passed in the full run; one unrelated mobile interior-dialog check hit a Chromium target crash. Its diagnostic rerun passed without an application change, giving passing results for all 30 checks. The actual-movie test now seeks to the closing card in every service, verifies its dark frame, checks the updated closing-credit status, and retains decoding, sound playback, immediate stop and focus checks. All existing site interaction checks pass.
-- Production base-path build and JavaScript/Python syntax checks pass. No actionable P0/P1/P2 issues remain.
+## Visual and functional evidence
 
-Five fidelity surfaces: existing Inter typography carries the studio title; the card uses centered hierarchy and letter-spaced PRESENTS; black and warm white match the portfolio palette; the real audio source is recorded and licensed; service copy and card labels match each selected offering. Desktop/mobile captured at 1440 × 1000 and 390 × 844. Safari, Firefox and physical devices were not tested. Earlier targets below describe superseded revisions.
+Reviewed all five encoded movies in `artifacts/service-film-contact-sheet.jpg`, showing the chat at 3.3/10.5 seconds, studio card at 13.3 seconds and work at 15.5/18.5 seconds. Browser screenshots of each reveal: `artifacts/service-work-{strategy,web,brand,styling,ventures}-{desktop,mobile}.png`. Earlier studio-card screenshots remain valid; full page and dialog captures are refreshed by the regression suite.
+
+All files decode as 20-second, 1280 × 720 H.264 with stereo AAC. The existing real-keyboard edit remains unchanged in the first 12 seconds. Production base-path build and JavaScript/Python syntax checks pass.
+
+All 30 desktop/mobile Chromium tests passed. The browser suite checks every trailer's duration, sound-enabled playback, dark studio-card frame and non-empty portfolio reveal frame. It checks that the reveal description exists and styling retains its concept label. Existing selection, enquiries, keyboard, motion, dismissal/focus and site checks remain covered. Chromium desktop/mobile emulation is used; Safari, Firefox and physical devices are not covered.
+
+Five fidelity surfaces: existing Inter typography and black/paper palette; source media fills a consistent 16:9 reveal; project captions stay above the native-control area; exact existing portfolio assets and recordings are used; copy identifies project and concept status without adding client results. No actionable P0/P1/P2 visual findings remain.
 
 ---
 

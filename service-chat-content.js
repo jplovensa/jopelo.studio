@@ -29,7 +29,12 @@ export default {
         "at": 9.1
       }
     ],
-    "deliverables": "positioning / messaging / pitch decks"
+    "deliverables": "positioning / messaging / pitch decks",
+    "reveal": {
+      "title": "SECHA",
+      "detail": "Live proposition & product story",
+      "href": "https://www.sechahome.com/"
+    }
   },
   "web": {
     "name": "Web experiences",
@@ -61,7 +66,12 @@ export default {
         "at": 9.1
       }
     ],
-    "deliverables": "web design / development / interactions"
+    "deliverables": "web design / development / interactions",
+    "reveal": {
+      "title": "Fjäll Group + SECHA",
+      "detail": "Live website experiences",
+      "href": "#work"
+    }
   },
   "brand": {
     "name": "Brand worlds",
@@ -93,7 +103,12 @@ export default {
         "at": 9.1
       }
     ],
-    "deliverables": "brand identity / visual systems / guidelines"
+    "deliverables": "brand identity / visual systems / guidelines",
+    "reveal": {
+      "title": "JOPELO",
+      "detail": "Studio identity & website",
+      "href": "#main"
+    }
   },
   "styling": {
     "name": "Styling your space",
@@ -125,7 +140,12 @@ export default {
         "at": 9.1
       }
     ],
-    "deliverables": "room layouts / furniture / materials"
+    "deliverables": "room layouts / furniture / materials",
+    "reveal": {
+      "title": "SECHA Studio+",
+      "detail": "Interior design concepts",
+      "href": "https://www.sechahome.com/studio/"
+    }
   },
   "ventures": {
     "name": "Ventures & real estate",
@@ -157,6 +177,11 @@ export default {
         "at": 9.1
       }
     ],
-    "deliverables": "commercial strategy / proptech / real estate"
+    "deliverables": "commercial strategy / proptech / real estate",
+    "reveal": {
+      "title": "Fjäll Group / Garuda Spark",
+      "detail": "Project reference / existing-space transformation",
+      "href": "https://www.fjallgroup.com/"
+    }
   }
 };

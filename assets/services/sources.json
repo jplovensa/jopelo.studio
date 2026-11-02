@@ -1,11 +1,81 @@
 {
-  "format": "14 seconds / 1280×720 / 24fps / H.264 + AAC stereo",
-  "direction": "Original text-only messaging motion graphics. Fictional deadpan exchanges with a persistent service title and deliverables strip. No photographic imagery.",
+  "format": "20 seconds / 1280×720 / 24fps / H.264 + AAC stereo",
+  "direction": "Deadpan chat motion graphics, JOPELO STUDIO PRESENTS card, then existing portfolio work. Studio+ visuals remain labelled as interior concepts.",
   "copy": "../../service-chat-content.js",
   "renderer": "../../tools/render-service-trailers.py",
   "sound": "Physical keyboard recording by russiandoll (PDSounds 555), public domain via Wikimedia Commons. Edited into natural typing bursts; no synthesized keyboard clicks.",
   "sound_provenance": "audio/source.json",
-  "ending": "12–14 seconds: JOPELO STUDIO PRESENTS, followed by the selected service title.",
+  "ending": "12–14 seconds: JOPELO STUDIO PRESENTS; 14–20 seconds: selected portfolio work reveal.",
+  "reveal_sources": {
+    "strategy": [
+      {
+        "video": "assets/secha-trailer.mp4",
+        "seek": 2,
+        "duration": 6
+      }
+    ],
+    "web": [
+      {
+        "video": "assets/fjall-trailer.mp4",
+        "seek": 2,
+        "duration": 3
+      },
+      {
+        "video": "assets/secha-trailer.mp4",
+        "seek": 3,
+        "duration": 3
+      }
+    ],
+    "brand": [
+      {
+        "image": "assets/services/reveals/jopelo-identity.png",
+        "duration": 6
+      }
+    ],
+    "styling": [
+      {
+        "image": "assets/styling/warm-modern-room.webp",
+        "duration": 3
+      },
+      {
+        "image": "assets/styling/soft-contemporary-room.webp",
+        "duration": 3
+      }
+    ],
+    "ventures": [
+      {
+        "image": "assets/services/reveals/garuda-spark.webp",
+        "duration": 6
+      }
+    ]
+  },
+  "reveal_attribution": {
+    "strategy": {
+      "title": "SECHA",
+      "detail": "Live proposition & product story",
+      "href": "https://www.sechahome.com/"
+    },
+    "web": {
+      "title": "Fjäll Group + SECHA",
+      "detail": "Live website experiences",
+      "href": "#work"
+    },
+    "brand": {
+      "title": "JOPELO",
+      "detail": "Studio identity & website",
+      "href": "#main"
+    },
+    "styling": {
+      "title": "SECHA Studio+",
+      "detail": "Interior design concepts",
+      "href": "https://www.sechahome.com/studio/"
+    },
+    "ventures": {
+      "title": "Fjäll Group / Garuda Spark",
+      "detail": "Project reference / existing-space transformation",
+      "href": "https://www.fjallgroup.com/"
+    }
+  },
   "fonts": [
     "../inter-regular.ttf",
     "../inter-black.ttf"
