@@ -24,7 +24,7 @@ test('page, assets, video playback and responsive layout', async ({ page }, test
   await expect(page.locator('.portrait')).toBeVisible();
   expect(await page.locator('.portrait').evaluate(img => img.complete && img.naturalWidth === 1024)).toBeTruthy();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
-  for (const id of ['work', 'recognition', 'principal', 'capabilities', 'experience', 'contact']) {
+  for (const id of ['work', 'styling', 'recognition', 'principal', 'capabilities', 'experience', 'contact']) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await expect(page.locator(`#${id} h2`)).toBeVisible();
   }
@@ -95,7 +95,7 @@ test('menu and section navigation', async ({ page }, testInfo) => {
 test('all services, form validation, generated message and clipboard', async ({ page, context }, testInfo) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await openSite(page);
-  for (const button of await page.locator('[data-service]').all()) {
+  for (const button of await page.locator('[data-service]:visible').all()) {
     const service = await button.getAttribute('data-service');
     await button.click();
     await expect(page.locator('#service')).toHaveValue(service);
@@ -143,12 +143,12 @@ test('reduced motion disables movement and video autoplay', async ({ page }) => 
 
 test('sections and navigation follow the reference sequence', async ({ page }) => {
   await openSite(page);
-  const order = ['work', 'recognition', 'principal', 'capabilities', 'experience', 'contact'];
+  const order = ['work', 'styling', 'recognition', 'principal', 'capabilities', 'experience', 'contact'];
   expect(await page.locator('main > section[id]').evaluateAll(sections => sections.map(s => s.id))).toEqual(order);
   expect(await page.locator('#navigation a').evaluateAll(links => links.map(a => a.hash))).toEqual(order.map(id => `#${id}`));
   expect(await page.locator('.section-label > span:first-child').allTextContents()).toEqual([
-    '01 / SELECTED WORK', '02 / RECOGNITION', '03 / THE PRINCIPAL', '04 / CAPABILITIES',
-    '05 / THE EXPERIENCE BEHIND THE WORK', '06 / YOUR NEXT CHAPTER',
+    '01 / SELECTED WORK', '02 / STYLING YOUR SPACE', '03 / RECOGNITION', '04 / THE PRINCIPAL', '05 / CAPABILITIES',
+    '06 / THE EXPERIENCE BEHIND THE WORK', '07 / YOUR NEXT CHAPTER',
   ]);
   await expect(page.locator('#recognition .awards')).toBeAttached();
   await expect(page.locator('#experience .awards')).toHaveCount(0);
@@ -198,4 +198,52 @@ test('studio opening plays on every refresh, including previously seen sessions'
   await expect(page.locator('#intro')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.locator('#intro')).toBeHidden();
+});
+
+
+test('styling portfolio previews show each source concept and restore focus', async ({ page }, testInfo) => {
+  await openSite(page);
+  const names = ['Warm Modern', 'Soft Contemporary', 'Earthy Retreat', 'Urban Studio'];
+  await expect(page.locator('#styling h2')).toContainText('STYLING');
+  await expect(page.locator('.styling-note')).toContainText('Purpose before');
+  await expect(page.locator('.style-collection-label')).toContainText('GENERATED INTERIOR CONCEPTS');
+  for (const name of names) {
+    const preview = page.getByRole('button', { name: `View ${name} design concept`, exact: true });
+    await preview.click();
+    await expect(page.locator('#style-dialog')).toBeVisible();
+    await expect(page.locator('#style-dialog-title')).toHaveText(name);
+    await expect.poll(() => page.locator('#style-dialog-image').evaluate(img => img.complete && img.naturalWidth > 0)).toBeTruthy();
+    await expect(page.getByRole('button', { name: 'Close', exact: true })).toBeFocused();
+    expect(await page.locator('#style-dialog').evaluate(el => el.scrollWidth <= el.clientWidth)).toBeTruthy();
+    if (name === 'Warm Modern') await page.locator('#style-dialog').screenshot({ path: `artifacts/styling-dialog-${testInfo.project.name}.png` });
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#style-dialog')).toBeHidden();
+    await expect(preview).toBeFocused();
+  }
+  await page.getByRole('button', { name: 'View Warm Modern design concept', exact: true }).click();
+  await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await expect(page.locator('#style-dialog')).toBeHidden();
+  await page.getByRole('button', { name: 'View Warm Modern design concept', exact: true }).click();
+  await page.mouse.click(3, 3);
+  await expect(page.locator('#style-dialog')).toBeHidden();
+});
+
+test('styling enquiry carries the chosen look without losing the existing brief', async ({ page }) => {
+  await openSite(page);
+  await page.locator('#brief').fill('Please keep my reading chair.');
+  for (const name of ['Warm Modern', 'Earthy Retreat']) {
+    await page.getByRole('button', { name: `View ${name} design concept`, exact: true }).click();
+    await page.getByRole('button', { name: 'Discuss this look', exact: true }).click();
+    await expect(page.locator('#style-dialog')).toBeHidden();
+    await expect(page.locator('#service')).toHaveValue('Styling your space');
+    await expect(page.locator('#brief')).toHaveValue(new RegExp(`Preferred direction: ${name}\\.`));
+    await expect(page.locator('#brief')).toHaveValue(/Please keep my reading chair/);
+    await expect(page.locator('#name')).toBeFocused();
+  }
+  expect(await page.locator('#brief').inputValue()).not.toContain('Preferred direction: Warm Modern.');
+  await page.locator('#name').fill('Styling Visitor');
+  await page.locator('#contact-form button[type=submit]').click();
+  await expect(page.locator('#message')).toHaveValue(/styling your space/);
+  await expect(page.locator('#message')).toHaveValue(/Earthy Retreat/);
+  await expect(page.locator('#message')).toHaveValue(/Please keep my reading chair/);
 });

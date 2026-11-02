@@ -28,6 +28,10 @@ Project cards use 12-second live-site hero recordings captured from www.fjallgro
 
 Recognition includes The Women’s Tabloid Award, with the source-linked Emerging Woman CEO – Real Estate 2024 recognition for Josephine Petra Lovensa. Venture background includes the official Antler, Iterative, Startupbootcamp, and user-confirmed Startup Studio Indonesia logos. Source URLs and recording details are documented in `assets/media-sources.json`.
 
+The “Styling your space” section uses the user-confirmed SECHA Studio+ portfolio: Warm Modern, Soft Contemporary, Earthy Retreat, and Urban Studio. Josephine’s “Purpose before everything” direction and considered-living palette are sourced from her designer panel. The images retain the source’s generated-concept attribution rather than being presented as completed client projects.
+
+Each look opens an accessible native dialog with a larger image, material language, and source link. “Discuss this look” selects the styling service and carries the chosen direction into the contact brief, preserving existing text and replacing only a previous automatically added direction. The full portfolio and corresponding Studio+ playground remain linked. Styling also appears in navigation and Capabilities.
+
 Includes responsive navigation, section links, original external project links, service selection, and a contact form that prepares an introduction for copying to LinkedIn. The form does not send messages or store submissions.
 
 ## Browser verification
@@ -42,9 +46,9 @@ npm test
 
 The test runner starts the Vite server automatically, or reuses an existing development server on port 4173. To inspect the latest HTML report, run `npx playwright show-report`. Screenshots are saved in `artifacts/`, test reports and failure traces are ignored by Git.
 
-All 18 Chromium tests passed: responsive layout without horizontal overflow, asset loading, 12-second hero preview dimensions and actual playback, award details/source link, all four venture logos, independent vertical-only letter motion, staggered timing, section/navigation ordering, pause/resume, awards, navigation, mobile menu/Escape, all four services, form validation, introduction generation, clipboard, intro on repeated refreshes (including previously seen sessions), replay/skip/focus, and reduced motion. No console or JavaScript runtime errors were detected. Production build and JavaScript syntax checks pass.
+All 22 Chromium tests passed: responsive layout without horizontal overflow, asset loading, 12-second hero preview dimensions and actual playback, award details/source link, all four venture logos, independent vertical-only letter motion, staggered timing, section/navigation ordering, pause/resume, awards, navigation, mobile menu/Escape, all five services, form validation, introduction generation, clipboard, intro on repeated refreshes (including previously seen sessions), replay/skip/focus, all four styling previews and dialog focus/close behavior, selected-style enquiries that preserve existing brief text, and reduced motion. No console or JavaScript runtime errors were detected. Production build and JavaScript syntax checks pass.
 
-The Renando reference was used for section sequencing: Work → Recognition → Principal → Capabilities → Experience → Contact. JOPELO’s original hero layout, assets, typography, and palette are preserved. Reference and implementation screenshots were compared at desktop and mobile sizes; see `design-qa.md`. Mobile service jumps use immediate scrolling to avoid a Chromium crash encountered with repeated smooth-scroll navigation. Desktop service navigation remains smooth. A local barcode SVG supplies the favicon.
+The original Renando reference guided the section sequence. The added styling service sits after Work: Work → Styling your space → Recognition → Principal → Capabilities → Experience → Contact. JOPELO’s original hero layout, assets, typography, and palette are preserved. Reference and implementation screenshots were compared at desktop and mobile sizes; see `design-qa.md`. Mobile service jumps use immediate scrolling to avoid a Chromium crash encountered with repeated smooth-scroll navigation. Desktop service navigation remains smooth. A local barcode SVG supplies the favicon.
 
 Verification covers desktop Chromium and Chromium mobile emulation; real-device Safari and Firefox have not been tested. External project/LinkedIn destinations were preserved, but messages were not sent and external sites were not audited.
 

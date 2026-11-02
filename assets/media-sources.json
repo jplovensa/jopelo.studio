@@ -62,5 +62,55 @@
     "recipient": "Josephine Petra Lovensa",
     "source": "https://awards.womenstabloid.com/awards/leadership-awards-2024/",
     "reference_page": "https://www.sechahome.com/"
+  },
+  "styling_portfolio": {
+    "source_page": "https://www.sechahome.com/studio/",
+    "confirmed_by_user": true,
+    "attribution": "SECHA Studio+ generated interior concepts",
+    "design_direction": {
+      "source": "Josephine designer direction panel on the source page",
+      "heading": "Purpose before everything.",
+      "style_card": "Considered living",
+      "materials": [
+        "Warm timber",
+        "Earthy surfaces",
+        "Soft textiles"
+      ],
+      "palette": [
+        "#79634b",
+        "#c9b494",
+        "#ebe4d7"
+      ]
+    },
+    "images": [
+      {
+        "style": "warm-modern",
+        "source_url": "https://www.sechahome.com/studio/assets/styling/warm-modern-room.webp",
+        "file": "styling/warm-modern-room.webp",
+        "source_alt": "A warm oak living and dining room with a linen modular sofa, travertine coffee table and golden afternoon light",
+        "classification": "Generated interior concept"
+      },
+      {
+        "style": "soft-contemporary",
+        "source_url": "https://www.sechahome.com/studio/assets/styling/soft-contemporary-room.webp",
+        "file": "styling/soft-contemporary-room.webp",
+        "source_alt": "Airy living room with an ivory curved sofa, pale stone table and powder blue accent chair",
+        "classification": "Generated interior concept"
+      },
+      {
+        "style": "earthy-retreat",
+        "source_url": "https://www.sechahome.com/studio/assets/styling/earthy-retreat-room.webp",
+        "file": "styling/earthy-retreat-room.webp",
+        "source_alt": "Earthy bedroom with a low walnut bed, natural flax bedding and a terracotta limewash wall",
+        "classification": "Generated interior concept"
+      },
+      {
+        "style": "urban-studio",
+        "source_url": "https://www.sechahome.com/studio/assets/styling/urban-studio-room.webp",
+        "file": "styling/urban-studio-room.webp",
+        "source_alt": "Architectural loft workspace and lounge with concrete walls, dark steel and smoked oak joinery",
+        "classification": "Generated interior concept"
+      }
+    ]
   }
 }
