@@ -9,8 +9,8 @@ test.beforeEach(async ({ page }) => {
 test.afterEach(async () => { expect(runtimeErrors, 'browser console and runtime errors').toEqual([]); });
 
 async function openSite(page) {
-  await page.addInitScript(() => sessionStorage.setItem('jopelo-closeup-seen', '1'));
   await page.goto('/');
+  if (await page.locator('#intro').isVisible()) await page.getByRole('button', { name: 'Skip intro', exact: true }).click();
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -72,7 +72,8 @@ test('hero moves vertically, pause and resume work', async ({ page }) => {
 
 test('menu and section navigation', async ({ page }, testInfo) => {
   await openSite(page);
-  await page.keyboard.press('Tab');
+  await page.locator('.brand').focus();
+  await page.keyboard.press('Shift+Tab');
   await expect(page.locator('.skip')).toBeFocused();
   await expect(page.locator('.skip')).toHaveCSS('opacity', '1');
   if (testInfo.project.name === 'mobile') {
@@ -178,4 +179,23 @@ test('recorded hero previews, award and four venture logos', async ({ page }) =>
     await expect.poll(() => img.evaluate(i => i.complete && i.naturalWidth > 0)).toBeTruthy();
     await expect(img).toBeVisible();
   }
+});
+
+
+test('studio opening plays on every refresh, including previously seen sessions', async ({ page }) => {
+  await page.addInitScript(() => sessionStorage.setItem('jopelo-closeup-seen', '1'));
+  await page.goto('/');
+  await expect(page.locator('#intro')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Skip intro', exact: true })).toBeFocused();
+  await page.getByRole('button', { name: 'Skip intro', exact: true }).click();
+  await expect(page.locator('#intro')).toBeHidden();
+  await page.reload();
+  await expect(page.locator('#intro')).toBeVisible();
+  await expect(page.locator('#intro-count')).toHaveText('001 / 003');
+  await expect(page.locator('#intro')).toBeHidden({ timeout: 5000 });
+  await expect(page.locator('.brand')).toBeFocused();
+  await page.reload();
+  await expect(page.locator('#intro')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#intro')).toBeHidden();
 });

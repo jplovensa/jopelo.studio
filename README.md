@@ -22,7 +22,7 @@ Build output is in `dist/`. No API keys or backend required.
 
 ## Motion and interactions
 
-The hero JOPELO word is split into six fixed horizontal letter modules. Each letter steps vertically between three rows with staggered timing, behind the stationary portrait. Mobile uses a smaller movement range. Pause motion stops the word and films; operating-system reduced-motion preferences disable animation. The studio opening can be skipped or replayed, and recognition has its own pause control.
+The hero JOPELO word is split into six fixed horizontal letter modules. Each letter steps vertically between three rows with staggered timing, behind the stationary portrait. Mobile uses a smaller movement range. Pause motion stops the word and films; operating-system reduced-motion preferences disable animation. The studio opening plays on every page load and refresh, with no session-based suppression. It can be skipped or replayed, and recognition has its own pause control.
 
 Project cards use 12-second live-site hero recordings captured from www.fjallgroup.com and www.sechahome.com after dismissing their opening intros. Both are local 1280 × 720 H.264 MP4 files with generated posters, silent playback, looping, and native controls. Existing motion controls and reduced-motion preferences also govern these previews. Videos start through the preference-aware script; reduced-motion visitors see posters without automatic video downloads.
 
@@ -42,7 +42,7 @@ npm test
 
 The test runner starts the Vite server automatically, or reuses an existing development server on port 4173. To inspect the latest HTML report, run `npx playwright show-report`. Screenshots are saved in `artifacts/`, test reports and failure traces are ignored by Git.
 
-All 16 Chromium tests passed: responsive layout without horizontal overflow, asset loading, 12-second hero preview dimensions and actual playback, award details/source link, all four venture logos, independent vertical-only letter motion, staggered timing, section/navigation ordering, pause/resume, awards, navigation, mobile menu/Escape, all four services, form validation, introduction generation, clipboard, intro replay/skip/focus, and reduced motion. No console or JavaScript runtime errors were detected. Production build and JavaScript syntax checks pass.
+All 18 Chromium tests passed: responsive layout without horizontal overflow, asset loading, 12-second hero preview dimensions and actual playback, award details/source link, all four venture logos, independent vertical-only letter motion, staggered timing, section/navigation ordering, pause/resume, awards, navigation, mobile menu/Escape, all four services, form validation, introduction generation, clipboard, intro on repeated refreshes (including previously seen sessions), replay/skip/focus, and reduced motion. No console or JavaScript runtime errors were detected. Production build and JavaScript syntax checks pass.
 
 The Renando reference was used for section sequencing: Work → Recognition → Principal → Capabilities → Experience → Contact. JOPELO’s original hero layout, assets, typography, and palette are preserved. Reference and implementation screenshots were compared at desktop and mobile sizes; see `design-qa.md`. Mobile service jumps use immediate scrolling to avoid a Chromium crash encountered with repeated smooth-scroll navigation. Desktop service navigation remains smooth. A local barcode SVG supplies the favicon.
 

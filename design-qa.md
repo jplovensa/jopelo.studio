@@ -2,7 +2,16 @@
 
 final result: passed
 
-## Current scope
+
+## Latest update: opening on every refresh
+
+The user requested the preloader on every refresh. Removed the session-storage read and write that suppressed subsequent openings; the existing `playOpening()` runs unconditionally at initialization and still checks reduced-motion preferences internally. The opening duration, appearance, counter, Skip intro, Escape, replay, and focus restoration are unchanged.
+
+Latest validation: **18 passed, 0 failed** across desktop and mobile Chromium. The new regression test pre-populates the legacy “seen” flag, confirms the opening on first visit and two subsequent reloads, waits for automatic dismissal, and checks focus restoration and Escape. Existing reduced-motion checks still pass. The shared test helper now dismisses the real opening rather than suppressing it through session storage.
+
+Production build and JavaScript syntax checks pass. This is a behavior-only change; no layout, typography, color, imagery, or other visual styling changed. The previously reviewed visual evidence below remains the baseline.
+
+## Visual/content baseline
 
 Replace Fjäll Group and SECHA title sequences with recordings of their real website heroes, rewrite Fjäll Group’s portfolio description, add The Women’s Tabloid Award, and add official Antler, Iterative, Startupbootcamp, and Startup Studio Indonesia logos. The user confirmed Startup Studio Indonesia. The previously approved hero composition, six-letter modular movement, section order, and contact flow are retained.
 

@@ -19,10 +19,9 @@ const motionButton = document.querySelector('.motion-toggle');
 const films = [...document.querySelectorAll('.project-video')];
 let introTimer;
 let countTimer;
-function dismissIntro(){clearTimeout(introTimer);clearInterval(countTimer);const restore=intro.contains(document.activeElement);intro.hidden=true;document.body.classList.remove('intro-playing');if(restore)document.querySelector('.brand').focus({preventScroll:true});try{sessionStorage.setItem('jopelo-closeup-seen','1');}catch{}}
+function dismissIntro(){clearTimeout(introTimer);clearInterval(countTimer);const restore=intro.contains(document.activeElement);intro.hidden=true;document.body.classList.remove('intro-playing');if(restore)document.querySelector('.brand').focus({preventScroll:true});}
 function playOpening(){if(motionPreference.matches)return;clearTimeout(introTimer);clearInterval(countTimer);intro.hidden=false;intro.classList.remove('playing');void intro.offsetWidth;intro.classList.add('playing');document.body.classList.add('intro-playing');skipIntro.focus({preventScroll:true});let count=1;document.querySelector("#intro-count").textContent="001 / 003";countTimer=setInterval(()=>{count=Math.min(3,count+1);document.querySelector("#intro-count").textContent=`00${count} / 003`;},850);introTimer=setTimeout(dismissIntro,2800);}
-let seen=false;try{seen=sessionStorage.getItem('jopelo-closeup-seen')==='1';}catch{}
-if(!seen)playOpening();
+playOpening();
 skipIntro.addEventListener('click',dismissIntro);
 document.querySelector('.replay-opening').addEventListener('click',playOpening);
 intro.addEventListener('keydown',e=>{if(e.key==='Escape')dismissIntro();if(e.key==='Tab'){e.preventDefault();skipIntro.focus();}});
