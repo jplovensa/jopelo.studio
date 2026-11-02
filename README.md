@@ -32,11 +32,13 @@ The “Styling your space” section uses the user-confirmed SECHA Studio+ portf
 
 Each look opens an accessible native dialog with a larger image, material language, and source link. “Discuss this look” selects the styling service and carries the chosen direction into the contact brief, preserving existing text and replacing only a previous automatically added direction. The full portfolio and corresponding Studio+ playground remain linked. Styling also appears in navigation and Capabilities.
 
-Capabilities keeps the featured-player and five-card layout, with text-only service trailers in a WhatsApp-inspired chat style. Five original 12-second animations use lowercase deadpan exchanges, letter-by-letter typing, animated dots, settling bubbles and read receipts. Each finishes with concrete service value. The fictional conversations do not imply real client messages. No photographs, generated imagery or cinematic project montages appear in these trailers.
+Capabilities keeps the featured-player and five-card layout, with text-only service trailers in a WhatsApp-inspired chat style. Five original 14-second animations use lowercase deadpan exchanges, letter-by-letter typing, animated dots, settling bubbles and read receipts. Each finishes with concrete service value. The fictional conversations do not imply real client messages. No photographs, generated imagery or cinematic project montages appear in these trailers.
 
 The service title stays prominent throughout every film, with a persistent deliverables strip (for example “web design / development / interactions”). The chat explains the work in first person, with dry asides and specific outputs.
 
-Soft keyboard clicks form the soundtrack, synchronized to typing dots and the 44-character-per-second text reveal. A small message pop marks each completed reply; deliberate quiet gaps preserve the deadpan timing. The melodic music is removed. Sound is synthesized from scratch without samples or third-party recordings. Each MP4 is 1280 × 720, 24 fps, H.264 with AAC stereo sound.
+The soundtrack now uses a real physical computer-keyboard recording by russiandoll, released into the public domain via PDSounds and hosted by Wikimedia Commons. Natural typing excerpts follow the chat bursts, with short fades and level adjustment; synthesized key clicks and message pops are removed. Original recording and provenance are in `assets/services/audio/`.
+
+Every trailer ends with a two-second black movie-style title card: “JOPELO STUDIO” / “PRESENTS”, followed by the service name. The full 14-second MP4 is 1280 × 720, 24 fps, H.264 with AAC stereo sound. The chat retains its full 12 seconds before the closing credit.
 
 Visible previews play muted, respect motion preferences, and preserve a manual pause. “Play the chat” opens the full trailer with sound and native controls; Close, Escape, backdrop dismissal and enquiries immediately stop playback. Keyboard arrows, Home and End select cards. Each enquiry selects its matching contact option. “Read the chat” exposes the entire selected conversation as accessible HTML in both the service panel and full player.
 

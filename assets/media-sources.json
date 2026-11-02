@@ -117,10 +117,11 @@
     "provenance": "services/sources.json",
     "renderer": "../tools/render-service-trailers.py",
     "copy": "../service-chat-content.js",
-    "duration_seconds": 12,
+    "duration_seconds": 14,
     "count": 5,
-    "sound": "Original synchronized soft keyboard foley and message pops; no melodic music or borrowed samples",
+    "sound": "Real computer-keyboard recording by russiandoll, public domain via PDSounds / Wikimedia Commons; see services/audio/source.json",
     "imagery": "Text-only motion graphics; no photographic or generated imagery",
-    "conversation": "Fictional deadpan chats, persistent service names and deliverables"
+    "conversation": "Fictional deadpan chats, persistent service names and deliverables",
+    "ending": "JOPELO STUDIO PRESENTS closing title card at 12–14 seconds"
   }
 }

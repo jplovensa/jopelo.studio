@@ -89,7 +89,7 @@ export function initServiceTrailers() {
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.previewService === id)));
     document.querySelector('#service-category').replaceChildren(
       document.createTextNode(`${film.category} / JOPELO CHATS `),
-      Object.assign(document.createElement('span'), { textContent: '00:12' }),
+      Object.assign(document.createElement('span'), { textContent: '00:14' }),
     );
     const title = document.querySelector('#service-title');
     title.replaceChildren(document.createTextNode(film.name), Object.assign(document.createElement('span'), { textContent: '.' }));
@@ -154,7 +154,7 @@ export function initServiceTrailers() {
     fullVideo.muted = false;
     fullVideo.volume = .65;
     fullVideo.load();
-    fullStatus.textContent = '12 seconds. Made-up chat. Real services. Keyboard clicks + message pops.';
+    fullStatus.textContent = '14 seconds. Real keyboard audio. Ends with JOPELO STUDIO PRESENTS.';
     if (!dialog.open) dialog.showModal();
     fullVideo.play().catch(() => { fullStatus.textContent = 'Press play to start the trailer.'; });
   });

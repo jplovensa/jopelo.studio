@@ -3,7 +3,7 @@
 Requires Python 3, Pillow, NumPy and FFmpeg (libx264/AAC).
 Run: python tools/render-service-trailers.py [optional service IDs]
 Copy is shared with the accessible browser transcripts in service-chat-content.js.
-All graphics, animation and sound are authored here; no third-party sound samples.
+Graphics and animation are authored here. Keyboard audio is a credited public-domain physical recording; see assets/services/audio/source.json.
 """
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -20,7 +20,8 @@ OUT = ROOT / 'assets/services'
 CACHE = ROOT / '.cache/service-chats'
 CACHE.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
-FPS, WIDTH, HEIGHT, DURATION, RATE = 24, 1280, 720, 12, 48000
+FPS, WIDTH, HEIGHT, DURATION, RATE = 24, 1280, 720, 14, 48000
+CREDIT_START = 12
 TYPE_RATE = 44  # The same timing drives text reveal and keyboard foley.
 FILMS = json.loads((ROOT/'service-chat-content.js').read_text().removeprefix('export default ').strip().removesuffix(';'))
 FONT = ROOT/'assets/inter-regular.ttf'
@@ -28,7 +29,7 @@ BOLD = ROOT/'assets/inter-black.ttf'
 PAPER, GREEN, INK = '#ebe8e0', '#183e33', '#16291f'
 WHITE, BUBBLE = '#fffef9', '#d5f6bf'
 FONTS = {n: ImageFont.truetype(str(FONT), n) for n in (20, 22, 24, 28, 44, 52)}
-HEAVY = {n: ImageFont.truetype(str(BOLD), n) for n in (24, 28, 36, 48)}
+HEAVY = {n: ImageFont.truetype(str(BOLD), n) for n in (24, 28, 36, 48, 82)}
 
 
 def wrap(text, font, width):
@@ -98,7 +99,30 @@ def bubble(draw, message, y, t, poster=False):
     return h
 
 
+def studio_credit(film, t):
+    im=Image.new('RGB',(WIDTH,HEIGHT),'#101010')
+    d=ImageDraw.Draw(im)
+    age=t-CREDIT_START
+    fade=min(1,max(0,age/.24))
+    def ink(rgb):return tuple(round(v*fade) for v in rgb)
+    paper=ink((245,241,232))
+    muted=ink((183,178,170))
+    def center(text,y,font,color):
+        d.text(((WIDTH-d.textlength(text,font=font))/2,y),text,font=font,fill=color)
+    center('A JOPELO ORIGINAL',214,FONTS[20],muted)
+    center('JOPELO STUDIO',272,HEAVY[82],paper)
+    text='PRESENTS';font=FONTS[28];tracking=10
+    width=sum(font.getlength(c) for c in text)+tracking*(len(text)-1)
+    x=(WIDTH-width)/2
+    for c in text:
+        d.text((x,389),c,font=font,fill=paper);x+=font.getlength(c)+tracking
+    center(film['name'],477,HEAVY[28],paper)
+    center('unserious chat. serious work.',543,FONTS[22],muted)
+    return im
+
+
 def frame(film, t):
+    if t >= CREDIT_START:return studio_credit(film,t)
     im = base(film, t)
     d=ImageDraw.Draw(im)
     y=166
@@ -135,45 +159,33 @@ def poster(film):
 
 
 def sound_design(film_id):
-    """Original keyboard foley synced to dots/reveals, plus quiet message pops.
+    """Real keyboard recording, edited into natural bursts around each message.
 
-    Deliberate gaps keep the timing deadpan. No melodic music or borrowed samples.
+    Recording: russiandoll / PDSounds 555 / public domain via Wikimedia Commons.
+    No oscillators or synthesized key clicks; the studio-credit ending is quiet.
     """
-    rng=np.random.default_rng(43+list(FILMS).index(film_id))
+    source=ROOT/'assets/services/audio/computer-keyboard.ogg'
+    raw=subprocess.check_output(['ffmpeg','-v','error','-i',str(source),'-map','0:a:0','-af','highpass=f=100','-ar',str(RATE),'-ac','1','-f','f32le','pipe:1'])
+    keyboard=np.frombuffer(raw,dtype='<f4').astype(np.float64)
     mix=np.zeros((RATE*DURATION,2),dtype=np.float64)
-    def add(when, signal, gain, pan=0):
-        start=max(0,int(when*RATE))
-        n=min(len(signal),len(mix)-start)
-        if n<=0:return
-        mix[start:start+n,0]+=signal[:n]*gain*math.sqrt((1-pan)/2)
-        mix[start:start+n,1]+=signal[:n]*gain*math.sqrt((1+pan)/2)
-    def keypress(when, pan, space=False):
-        t=np.arange(int(.045*RATE))/RATE
-        noise=rng.normal(0,1,len(t))
-        # A soft broadband tap with a lower body and a short, sharper release.
-        click=(noise-np.roll(noise,1))*.19*np.exp(-t*330)
-        hz=rng.uniform(620,1050) if space else rng.uniform(1250,1950)
-        body=np.sin(2*np.pi*hz*t)*np.exp(-t*175)*.55
-        attack=np.minimum(1,t/.0008)
-        add(when,(click+body)*attack,rng.uniform(.16,.23),pan)
-    for m in FILMS[film_id]['messages']:
-        pan=.2 if m['sender']=='jopelo' else -.2
-        # The visible dots get a short, irregular pre-typing burst.
-        for offset in (-.43,-.31,-.19,-.08):
-            keypress(max(0,m['at']+offset),pan)
-        # Follow the actual letter reveal, leaving a little human variation.
-        for index in range(0,len(m['text']),2):
-            when=m['at']+index/TYPE_RATE+rng.uniform(0,.009)
-            keypress(when,pan,m['text'][index]==' ')
-        completed=m['at']+len(m['text'])/TYPE_RATE
-        t=np.arange(int(.085*RATE))/RATE
-        pop=np.sin(2*np.pi*(760*t-1900*t*t))*np.exp(-t*65)*np.minimum(1,t/.002)
-        add(completed+.025,pop,.13,pan)
-    mix*=np.minimum(1,np.arange(len(mix))/RATE/.025)[:,None]
-    mix*=np.minimum(1,(len(mix)-np.arange(len(mix)))/RATE/.08)[:,None]
-    mix *= .65 / max(.001,np.max(np.abs(mix)))
+    offset=list(FILMS).index(film_id)*9
+    for index,m in enumerate(FILMS[film_id]['messages']):
+        start=max(0,m['at']-.43)
+        finish=m['at']+len(m['text'])/TYPE_RATE+.09
+        n=int((finish-start)*RATE)
+        source_start=int((3.1+offset+index*1.87)*RATE)
+        clip=keyboard[source_start:source_start+n].copy()
+        # Keep the real, irregular performance; only trim, fade and level it.
+        ramp=min(int(.018*RATE),len(clip)//2)
+        clip[:ramp]*=np.linspace(0,1,ramp)
+        clip[-ramp:]*=np.linspace(1,0,ramp)
+        pan=.12 if m['sender']=='jopelo' else -.12
+        at=int(start*RATE)
+        mix[at:at+len(clip),0]+=clip*math.sqrt((1-pan)/2)
+        mix[at:at+len(clip),1]+=clip*math.sqrt((1+pan)/2)
+    mix *= .70 / max(.001,np.max(np.abs(mix)))
     assert np.max(np.abs(mix))<.95
-    path=CACHE/(film_id+'-original-chat-score.wav')
+    path=CACHE/(film_id+'-real-keyboard.wav')
     with wave.open(str(path),'wb') as f:
         f.setnchannels(2);f.setsampwidth(2);f.setframerate(RATE)
         f.writeframes((mix*32767).astype('<i2').tobytes())
@@ -203,11 +215,13 @@ def main():
     with ThreadPoolExecutor(max_workers=2) as pool:
         list(pool.map(render,ids))
     provenance={
-        'format':'12 seconds / 1280×720 / 24fps / H.264 + AAC stereo',
+        'format':'14 seconds / 1280×720 / 24fps / H.264 + AAC stereo',
         'direction':'Original text-only messaging motion graphics. Fictional deadpan exchanges with a persistent service title and deliverables strip. No photographic imagery.',
         'copy':'../../service-chat-content.js',
         'renderer':'../../tools/render-service-trailers.py',
-        'sound':'Original soft keyboard foley synchronized to typing dots and 44-character-per-second text reveals, with message pops on completion. No melodic music, third-party recordings or borrowed samples.',
+        'sound':'Physical keyboard recording by russiandoll (PDSounds 555), public domain via Wikimedia Commons. Edited into natural typing bursts; no synthesized keyboard clicks.',
+        'sound_provenance':'audio/source.json',
+        'ending':'12–14 seconds: JOPELO STUDIO PRESENTS, followed by the selected service title.',
         'fonts':['../inter-regular.ttf','../inter-black.ttf'],
         'films':{k:{'name':v['name'],'file':k+'.mp4','poster':k+'.jpg'}for k,v in FILMS.items()},
         'icon':{'name':'Bootstrap Icons play-fill','source':'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/play-fill.svg','license':'bootstrap-icons-LICENSE.txt'}

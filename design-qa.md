@@ -2,25 +2,24 @@
 
 final result: passed
 
-## Current scope: service-led deadpan chats with typing sound
+## Current scope: actual keyboard audio and movie closing card
 
-Revised all five trailers so the work remains clear throughout: the service name is now a prominent 36 px bold header and a persistent 28 px deliverables strip sits above the messages. Each chat explicitly describes the service in first person, with understated asides. Example: “yeah. and load properly.” followed by “i design + code the whole website.” The cream/green messaging aesthetic, 44 px message typography, 16:9 player and five-card layout remain.
+All five service trailers now use a recording of a physical computer keyboard rather than synthesized clicks. Source: “Computer keyboard” by russiandoll, PDSounds record 555, recorded in London in May 2008 and released into the public domain by the author. The unmodified 83.72-second recording and source/license evidence are checked into `assets/services/audio/`. Natural excerpts are trimmed around each typing burst, high-pass filtered at 100 Hz, faded and normalized. No synthesized keyboard clicks or message pops remain.
 
-Typing slows to 44 characters per second. Five compact message bubbles fit above the footer with space to spare. Shared dialogue and deliverables are authored in `service-chat-content.js`; the accessible HTML transcripts use the same messages.
+Every movie retains its 12-second chat, then holds a black studio card for two seconds. The card fades in over 0.24 seconds and reads “A JOPELO ORIGINAL / JOPELO STUDIO / PRESENTS”, followed by the selected service and “unserious chat. serious work.” All titles remain within the native video controls' safe area. The final duration is 14 seconds. The ending is quiet.
 
-The melodic music is removed. Original soft keyboard foley follows the typing-dot bursts and actual text reveal, with a small pop after each completed message. Deliberate silent gaps preserve the deadpan pacing. Audio is synthesized locally with no samples or borrowed recordings. Player copy now says “Keyboard clicks + message pops.” Explicit playback enables sound; previews remain muted.
+The service title, deliverables strip, first-person deadpan messages, readable HTML transcripts and muted previews remain. Player metadata and accessibility status now identify the 14-second duration, real keyboard audio and closing title.
 
 ## Evidence and verification
 
-- Reviewed final frames from every film in `artifacts/service-film-contact-sheet.jpg` at 1.2, 3.3, 7.5 and 11.3 seconds; service names and deliverables remain visible in all states.
-- Desktop/mobile section evidence: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Full player: `artifacts/service-trailer-dialog-desktop.png` and `artifacts/service-trailer-dialog-mobile.png`.
-- Final media: all five decode as 12-second 1280 × 720 H.264 with stereo AAC. Decoded peaks are below 0.63; typing-burst RMS is 0.047–0.059. Intended quiet gaps and the ending are silent; no clipping.
-- 30 Chromium desktop/mobile tests pass, including updated transcripts, each actual video, explicit sound playback, dismissal, reduced motion, motion pause, enquiries and existing site behavior.
-- Desktop/mobile and six intermediate width reviews pass without overflow. Production base-path build and JavaScript/Python syntax checks pass.
+- Final actual encoded frames from all five movies at 1.2, 3.3, 10.5 and 13.3 seconds: `artifacts/service-film-contact-sheet.jpg`.
+- New ending in the browser: `artifacts/service-studio-credit-desktop.png` and `artifacts/service-studio-credit-mobile.png`.
+- Section captures: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Chat-state dialogs and full-page regression captures are retained separately.
+- All five files decode as 14-second 1280 × 720 H.264 with stereo AAC. Decoded peaks range from 0.647 to 0.740; chat RMS ranges from 0.026 to 0.053. No clipping; the entire studio-credit interval is silent.
+- 29 checks passed in the full run; one unrelated mobile interior-dialog check hit a Chromium target crash. Its diagnostic rerun passed without an application change, giving passing results for all 30 checks. The actual-movie test now seeks to the closing card in every service, verifies its dark frame, checks the updated closing-credit status, and retains decoding, sound playback, immediate stop and focus checks. All existing site interaction checks pass.
+- Production base-path build and JavaScript/Python syntax checks pass. No actionable P0/P1/P2 issues remain.
 
-Five fidelity surfaces: local Inter and existing site type hierarchy retained; compact chat spacing keeps all five messages visible; familiar cream/green chat colors retain contrast; trailers remain text-only; service names, specific deliverables and first-person copy keep the offering clear. No actionable P0/P1/P2 issues remain.
-
-Coverage is Chromium desktop/mobile emulation. Safari, Firefox and physical devices were not tested. Fictional conversations remain labelled, and the contact form prepares an introduction without sending it. Earlier visual targets below describe superseded revisions.
+Five fidelity surfaces: existing Inter typography carries the studio title; the card uses centered hierarchy and letter-spaced PRESENTS; black and warm white match the portfolio palette; the real audio source is recorded and licensed; service copy and card labels match each selected offering. Desktop/mobile captured at 1440 × 1000 and 390 × 844. Safari, Firefox and physical devices were not tested. Earlier targets below describe superseded revisions.
 
 ---
 
