@@ -24,7 +24,7 @@ test('page, assets, video playback and responsive layout', async ({ page }, test
   await expect(page.locator('.portrait')).toBeVisible();
   expect(await page.locator('.portrait').evaluate(img => img.complete && img.naturalWidth === 1024)).toBeTruthy();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
-  for (const id of ['work', 'experience', 'principal', 'capabilities', 'contact']) {
+  for (const id of ['work', 'recognition', 'principal', 'capabilities', 'experience', 'contact']) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await expect(page.locator(`#${id} h2`)).toBeVisible();
   }
@@ -43,7 +43,9 @@ test('page, assets, video playback and responsive layout', async ({ page }, test
 
 test('hero moves vertically, pause and resume work', async ({ page }) => {
   await openSite(page);
-  const word = page.locator('.kinetic-word > span');
+  const word = page.locator('.kinetic-letter').first();
+  await expect(page.locator('.kinetic-letter')).toHaveCount(6);
+  await expect(page.locator('.kinetic-line')).toHaveText('JOPELO');
   const transform = () => word.evaluate(el => {
     const m = new DOMMatrix(getComputedStyle(el).transform);
     return { x: m.m41, y: m.m42, animation: getComputedStyle(el).animationName };
@@ -51,9 +53,15 @@ test('hero moves vertically, pause and resume work', async ({ page }) => {
   const first = await transform();
   await expect.poll(async () => Math.abs((await transform()).y - first.y)).toBeGreaterThan(1);
   expect((await transform()).x).toBe(0);
-  expect(first.animation).toBe('word-rise');
+  expect(first.animation).toBe('letter-module');
+  const offsets = await page.locator('.kinetic-letter').evaluateAll(letters => letters.map(el => {
+    const m = new DOMMatrix(getComputedStyle(el).transform); return { x: m.m41, y: Math.round(m.m42) };
+  }));
+  expect(offsets.every(offset => offset.x === 0)).toBeTruthy();
+  expect(new Set(offsets.map(offset => offset.y)).size).toBeGreaterThan(1);
   await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
   await expect(word).toHaveCSS('animation-play-state', 'paused');
+  expect(await page.locator('.kinetic-letter').evaluateAll(letters => letters.every(el => getComputedStyle(el).animationPlayState === 'paused'))).toBeTruthy();
   await expect.poll(() => page.locator('video').evaluateAll(vs => vs.every(v => v.paused))).toBeTruthy();
   await page.getByRole('button', { name: 'Resume motion', exact: true }).click();
   await expect(word).toHaveCSS('animation-play-state', 'running');
@@ -122,7 +130,24 @@ test('reduced motion disables movement and video autoplay', async ({ page }) => 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await openSite(page);
   await expect(page.locator('#intro')).toBeHidden();
-  await expect(page.locator('.kinetic-word > span')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.kinetic-letter').first()).toHaveCSS('animation-name', 'none');
+  expect(await page.locator('.kinetic-letter').evaluateAll(letters => letters.every(el => getComputedStyle(el).animationName === 'none'))).toBeTruthy();
   await expect(page.locator('.awards-track')).toHaveCSS('animation-name', 'none');
   expect(await page.locator('video').evaluateAll(vs => vs.every(v => v.paused))).toBeTruthy();
+});
+
+
+test('sections and navigation follow the reference sequence', async ({ page }) => {
+  await openSite(page);
+  const order = ['work', 'recognition', 'principal', 'capabilities', 'experience', 'contact'];
+  expect(await page.locator('main > section[id]').evaluateAll(sections => sections.map(s => s.id))).toEqual(order);
+  expect(await page.locator('#navigation a').evaluateAll(links => links.map(a => a.hash))).toEqual(order.map(id => `#${id}`));
+  expect(await page.locator('.section-label > span:first-child').allTextContents()).toEqual([
+    '01 / SELECTED WORK', '02 / RECOGNITION', '03 / THE PRINCIPAL', '04 / CAPABILITIES',
+    '05 / THE EXPERIENCE BEHIND THE WORK', '06 / YOUR NEXT CHAPTER',
+  ]);
+  await expect(page.locator('#recognition .awards')).toBeAttached();
+  await expect(page.locator('#experience .awards')).toHaveCount(0);
+  const delays = await page.locator('.kinetic-letter').evaluateAll(letters => letters.map(el => getComputedStyle(el).animationDelay));
+  expect(new Set(delays).size).toBe(6);
 });

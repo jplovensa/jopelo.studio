@@ -2,69 +2,64 @@
 
 final result: passed
 
+## Scope and source truth
+
+Requested change: rearrange JOPELO sections using https://renando.duingzcreative.site/ as the ordering reference, preserve the JOPELO hero, and replace whole-word drift with vertical modular letter movement. This is a scoped arrangement/motion update, not a request to copy Renando's palette, identity, content, or components.
+
+Captured source: `artifacts/reference-renando-desktop.png` and `artifacts/reference-renando-mobile.png`. Inspected the live reference in Chromium on desktop and mobile, including progressive scroll captures and heading text. Its relevant flow is selected work → recognition → about/skills → journey → contact. Its 3D process breakdown has no existing JOPELO counterpart and was not fabricated.
+
+JOPELO mapping: hero unchanged in position → Work → Recognition → Principal → Capabilities → Experience → Contact. Recognition and the institutional-background strip were moved out of Experience. Existing content, assets, project links, form, videos, and motion controls remain.
+
+## Evidence and normalization
+
+| Evidence | Paths |
+| --- | --- |
+| Desktop order comparison, both sources in one image | `artifacts/comparison-section-order-desktop.png` |
+| Mobile order comparison, both sources in one image | `artifacts/comparison-section-order-mobile.png` |
+| Existing versus updated hero | `artifacts/comparison-hero-preservation-desktop.png`, `artifacts/comparison-hero-preservation-mobile.png` |
+| Latest implementation full views | `artifacts/desktop-full.png`, `artifacts/mobile-full.png` |
+| Latest hero views | `artifacts/desktop-hero.png`, `artifacts/mobile-hero.png` |
+| Focused relocated recognition | `artifacts/recognition-desktop.png`, `artifacts/recognition-mobile.png` |
+| Interaction states | `artifacts/mobile-menu.png`, `artifacts/desktop-contact.png`, `artifacts/mobile-contact.png` |
+
+Desktop viewport is 1440 × 1000 CSS px at deviceScaleFactor 1. Source full page is 1440 × 5239 px; updated JOPELO full page is 1440 × 6698 px. Mobile viewport is 390 × 844 CSS px at density 1; source full page is 390 × 5952 px and updated JOPELO is 390 × 7460 px. There is no density mismatch. Full-page heights intentionally differ because JOPELO retains its own hero, content, and typography. Desktop comparison panels are scaled to 720 px wide; mobile panels remain 390 px wide. Hero panels compare matching viewport dimensions.
+
+Source order screenshots use reduced motion for stable capture. Implementation hero/full screenshots dismiss the opening, load local fonts, pause motion, and reveal section headings. Letter positions vary by animation phase; that is the requested motion change. Project video frames and recognition marquee phases are not used for precise pixel matching.
+
 ## Findings
 
-No unresolved P0/P1/P2 findings after the fixes and browser verification below.
+No actionable P0/P1/P2 findings remain within the requested scope.
 
-- Fixed: repeated mobile service selections crashed Chromium during smooth-scroll navigation. Isolated focus and touch handling; using immediate scrolling avoided the failure. Mobile and reduced-motion service navigation now uses `instant`, while desktop retains smooth scrolling. The final mobile service test passes all four selections, input focus, validation, message preparation, and real clipboard copying. Evidence: `artifacts/mobile-contact.png`; passing Playwright report.
-- Fixed: full Chromium requested a missing favicon and logged a 404. Added a favicon link to the existing local barcode SVG. Final browser checks report zero console/runtime errors.
-- Test correction: mobile menu button changes its accessible name from Menu to Close. The test now locates the persistent button before asserting its expanded state. Menu navigation and Escape both pass.
-
-## Source and implementation evidence
-
-Source visual truth: live https://jplovensa.github.io/jopelo/ captured over the configured HTTPS proxy in Chromium, with TLS verification enabled.
-
-Implementation: http://127.0.0.1:4173/, rendered by standalone Playwright Chromium as explicitly requested by the user. This is not the unavailable integrated Browser panel.
-
-| View | Source | Implementation | Combined comparison |
-| --- | --- | --- | --- |
-| Desktop hero | `artifacts/reference-desktop-hero.png` | `artifacts/desktop-hero.png` | `artifacts/comparison-desktop-hero.png` |
-| Desktop full page | `artifacts/reference-desktop-full.png` | `artifacts/desktop-full.png` | `artifacts/comparison-desktop-full.png` |
-| Mobile hero | `artifacts/reference-mobile-hero.png` | `artifacts/mobile-hero.png` | `artifacts/comparison-mobile-hero.png` |
-| Mobile full page | `artifacts/reference-mobile-full.png` | `artifacts/mobile-full.png` | `artifacts/comparison-mobile-full.png` |
-
-Desktop viewport: 1440 × 1000 CSS px; hero screenshots 1440 × 1000 px; full screenshots 1440 × 6363 px.
-Mobile viewport: 390 × 844 CSS px; hero screenshots 390 × 844 px; full screenshots 390 × 7168 px.
-Device scale factor: 1 for both, with no source/implementation density mismatch. Full-page heights match at both sizes. Desktop comparison boards scale each panel to 720 px wide for overall review; mobile panels retain 390 px width. Focused work/contact boards preserve full resolution.
-
-State: introduction dismissed, fonts loaded, motion paused, section reveal transitions completed, contact form initially empty. The kinetic word is paused at different animation phases because its motion is deliberately changed. Video progress and marquee phase differ slightly; those differences were not treated as layout drift.
-
-Focused comparison evidence: `artifacts/comparison-desktop-work.png`, `artifacts/comparison-desktop-contact.png`, `artifacts/comparison-mobile-work.png`, `artifacts/comparison-mobile-contact.png`. Hero boards also provide focused portrait, branding, navigation, and headline comparisons. Additional interaction screenshots: `artifacts/mobile-menu.png`, `artifacts/desktop-contact.png`, `artifacts/mobile-contact.png`.
+- Section order now follows the reference's relevant progression. Navigation follows the same order, and section numbering is sequential from 01 through 06. Principal and Capabilities together map to the reference's about/skills region, before Experience.
+- The hero keeps its portrait framing, crop, gradient mask, headline, copy, CTA, principal credit, and barcode. Only the large JOPELO text animation changes. Each of six letters occupies a fixed horizontal module and moves between three vertical positions with staggered timing and held intervals. No horizontal translation is introduced.
+- The expanded navigation remains within the viewport at 641, 768, and 1000 px; the auxiliary location label is hidden at tablet widths to provide space.
+- Recognition is now independently navigable, with its pause control and existing LinkedIn credentials link retained. Its reduced-motion mobile layout was inspected at full resolution.
 
 ## Required fidelity surfaces
 
-- Fonts/typography: local source Inter regular and black files retained. Hero, heading hierarchy, weights, wrapping, line height, and small interface labels visually match the source in combined desktop/mobile captures.
-- Spacing/layout rhythm: header, portrait stage, centered hero copy, project grid, experience rows, capabilities, contact form, and footer align with the source. Mobile stacks and full-page heights match. Browser tests confirm no horizontal overflow at either viewport.
-- Colors/tokens: original dark, paper, muted, red, and gold treatments preserved; combined comparison shows no actionable color drift.
-- Asset quality: original portrait, films, posters, fonts, barcode, and arrow icon are local assets. Portrait crop, mask, and sharpness match. Actual playback of both films was verified.
-- Copy/content: source sections, project names, roles, descriptions, labels, and external destinations preserved. Contact prepares a LinkedIn introduction; it does not send messages.
+- Fonts and typography: existing local Inter regular/black files, heading hierarchy, wrapping, and interface weights are preserved. New Recognition heading uses the existing section heading system. Hero baseline comparison confirms its text wrapping is preserved.
+- Spacing/layout rhythm: preserved hero stage and copy placement; existing section spacing and grid treatment retained while moving sections in actual DOM order. New Recognition uses existing section spacing. No horizontal overflow at desktop/mobile or checked tablet widths.
+- Colors/tokens: JOPELO's existing paper, dark, muted, red, and gold palette is preserved. Renando's colors are outside this scoped request.
+- Asset fidelity: existing portrait, films, posters, barcode, icon, and fonts are retained without replacements or hotlinks. Video playback remains functional. The reference contributes ordering only.
+- Copy/content: existing JOPELO content is preserved. Recognition gets a heading and a short introduction drawn from existing claims; no new awards, statistics, timelines, or affiliations were invented. Section labels and navigation now match the new flow.
 
-## Intentional changes
+## Iteration history
 
-The JOPELO hero now moves vertically with subtle perspective rotation instead of horizontal drift, behind a stationary portrait. Tests sample its DOMMatrix to verify changing Y and zero X translation, plus pause/resume and reduced-motion support. Mobile service navigation now jumps immediately, as documented above; visual layout is unchanged. Added local favicon and build/test tooling.
+1. Previous browser-verified site passed 12 tests. Its hero screenshots form the preservation baseline.
+2. Captured Renando desktop/mobile reference and mapped the existing content without adding an unsupported 3D breakdown.
+3. Reordered sections and navigation, separated Recognition, and added modular letter keyframes. Updated the motion test to inspect the individual animated letters rather than the now-stationary outer wrapper.
+4. First scoped verification: 14 tests passed; captured and inspected desktop/mobile hero and whole-page sequence boards.
+5. Strengthened checks for all-letter pause/reduced-motion behavior, staggered delays, zero horizontal movement, and distinct simultaneous vertical offsets. Final run: **14 passed, 0 failed**, with no browser console or uncaught runtime errors. No visual P0/P1/P2 fixes were necessary after comparison. Supplemental tablet width checks passed at 641, 768, and 1000 px.
 
-## Comparison and verification history
+Earlier mobile smooth-scroll and favicon fixes remain in place and were covered by the regression suite.
 
-1. Earlier QA was blocked because the integrated Browser tools were unavailable.
-2. User explicitly requested standalone Playwright installation. Installed `@playwright/test` and Chromium; captured the live source and local desktop/mobile site.
-3. Initial browser run exposed the menu test locator issue and a mobile renderer crash. Corrected the locator. Crash persisted with a single worker and full Chromium, so concurrency alone was not the cause. Diagnostic variants identified immediate service scrolling as a working correction.
-4. Corrected mobile scrolling. A subsequent full Chromium run exposed the favicon 404; supplied the existing barcode SVG as favicon.
-5. Final run: **12 passed, 0 failed**. Fresh implementation screenshots were recaptured and combined with the settled live reference screenshots for full-page and focused review. No outstanding actionable P0/P1/P2 mismatch.
+## Validation and implementation checklist
 
-## Functional evidence
+- [x] Reference desktop/mobile capture and DOM section inspection.
+- [x] Combined source/implementation ordering comparisons and hero baseline comparisons.
+- [x] Focused Recognition review.
+- [x] 14 passing Chromium tests, including actual film playback, navigation/menu/Escape, contact form/clipboard, intro replay/skip/focus restoration, all-letter pause/reduced motion, and section order.
+- [x] Tablet header and horizontal-width checks.
+- [x] Production build and JavaScript syntax checks.
 
-`npm test` runs six tests in each of two projects (desktop/mobile). Passed: layout/assets, loaded portrait, section content, both videos playing, vertical hero movement, motion pause/resume, awards pause, section navigation, mobile menu/Escape, all service selections, form validation, introduction generation, real clipboard copying, intro replay/skip, focus restoration, and reduced-motion behavior. Console and uncaught runtime errors are checked in every test; none occurred in the final run.
-
-`npm run build` and `node --check script.js` pass. Playwright HTML report is available in `playwright-report/` and screenshots in `artifacts/`.
-
-## Implementation checklist
-
-- [x] Install Playwright and Chromium.
-- [x] Capture and compare live source and local implementation at both target sizes.
-- [x] Fix mobile service navigation and favicon request.
-- [x] Pass all 12 browser tests with zero console/runtime errors.
-- [x] Save current screenshots and reusable test configuration.
-
-## Remaining scope
-
-Mobile uses Chromium emulation, not a physical device. Firefox and Safari were not tested. External destinations were preserved; no messages were sent or external services audited. No deployment or environment publication was performed.
+Browser coverage is desktop Chromium and mobile emulation; physical-device Safari and Firefox remain untested. The contact form prepares an introduction and does not send messages. Historical original-clone comparison PNGs remain in `artifacts/`; use the section-order and hero-preservation boards listed above for this revision.

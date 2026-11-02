@@ -25,19 +25,38 @@
 @media(prefers-reduced-motion:reduce){.awards-toggle{display:none}}
 .portrait-window{mask-image:linear-gradient(to bottom,#000 0%,#000 88%,transparent 100%)}.cinema-copy .title-line:first-child::after{content:none}
 
-/* Vertical studio ident: depth comes from perspective; portrait stays still. */
+/* Each letter occupies a fixed horizontal module and steps between vertical rows. */
 .kinetic-word { overflow: visible; perspective: 1000px; }
-.kinetic-word > span { animation: word-rise 10s cubic-bezier(.45,0,.55,1) infinite; transform-origin: center; backface-visibility: hidden; }
-@keyframes word-rise {
-  0%, 100% { transform: translate3d(0,-65px,-30px) rotateX(8deg); }
-  50% { transform: translate3d(0,100px,25px) rotateX(-6deg); }
+.kinetic-word > .kinetic-line {
+  display: flex;
+  justify-content: center;
+  animation: none;
+  transform: none;
 }
-@media(max-width:640px) {
-  @keyframes word-rise {
-    0%,100% { transform: translate3d(0,-30px,-15px) rotateX(6deg); }
-    50% { transform: translate3d(0,90px,15px) rotateX(-5deg); }
-  }
+.kinetic-letter {
+  display: block;
+  --module-step: clamp(28px, 4.5vw, 72px);
+  animation: letter-module 7.2s cubic-bezier(.76, 0, .24, 1) infinite;
+  animation-delay: calc(var(--module) * -.32s);
+  will-change: transform;
 }
-@media(prefers-reduced-motion:reduce) {
-  .kinetic-word > span { animation: none !important; transform: none; }
+@keyframes letter-module {
+  0%, 12%, 100% { transform: translate3d(0, 0, 0); }
+  22%, 42% { transform: translate3d(0, calc(-1 * var(--module-step)), 0); }
+  52%, 72% { transform: translate3d(0, var(--module-step), 0); }
+  82% { transform: translate3d(0, 0, 0); }
+}
+.motion-paused .kinetic-letter,
+.intro-playing .kinetic-letter { animation-play-state: paused; }
+.recognition-section .awards { margin-top: 0; }
+@media (min-width: 641px) and (max-width: 1000px) {
+  .header .location { display: none; }
+  #navigation { gap: 20px; }
+}
+@media (max-width: 640px) {
+  .kinetic-letter { --module-step: 28px; }
+  .recognition-section .section-heading h2 { font-size: 9.5vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-letter { animation: none !important; transform: none !important; }
 }
