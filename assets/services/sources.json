@@ -1,16 +1,13 @@
 {
-  "format": "12 seconds / 1280\u00d7720 / 24fps / H.264 + original AAC stereo sound design",
-  "photographic_assets": "Existing user portfolio footage, photography and Studio+ concepts; no newly generated photographic scenes",
-  "sources": {
-    "fjall-hero.mp4": "https://www.fjallgroup.com/assets/hero.mp4",
-    "secha-hero.mp4": "https://www.sechahome.com/assets/video/hero-dressing-room.mp4",
-    "josephine.png": "https://www.sechahome.com/studio/assets/designers/josephine.png",
-    "fjall-logo.png": "https://www.fjallgroup.com/assets/fjall-logo.png",
-    "secha-logo.png": "https://www.sechahome.com/assets/secha-logo.png",
-    "retrofit-interior.webp": "https://www.fjallgroup.com/assets/retrofit-interior.webp",
-    "nuanu.webp": "https://www.fjallgroup.com/assets/nuanu.webp"
-  },
-  "sound": "Original synthesized instrumental pulse; no third-party samples or Netflix audio",
+  "format": "12 seconds / 1280×720 / 24fps / H.264 + AAC stereo",
+  "direction": "Original text-only messaging motion graphics. Fictional exchanges, real service offerings. No photographic imagery.",
+  "copy": "../../service-chat-content.js",
+  "renderer": "../../tools/render-service-trailers.py",
+  "sound": "Original 100 BPM plucked bass, toy-keyboard melody, woodblocks, message pops and a small descending synth. Authored with NumPy; no samples or borrowed music.",
+  "fonts": [
+    "../inter-regular.ttf",
+    "../inter-black.ttf"
+  ],
   "films": {
     "strategy": {
       "name": "Strategy & storytelling",

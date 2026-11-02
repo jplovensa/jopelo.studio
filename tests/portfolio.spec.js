@@ -262,6 +262,12 @@ test('service catalogue selects all five films and carries each service to the b
     await expect(button).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('#service-title')).toHaveText(name + '.');
     await expect(page.locator('[data-preview-service][aria-pressed=true]')).toHaveCount(1);
+    const transcript = page.locator('.service-info .chat-transcript');
+    await transcript.locator('summary').click();
+    await expect(transcript.locator('li')).toHaveCount(5);
+    await expect(transcript.locator('li').nth(3)).toContainText('JOPELO:');
+    if (name === 'Web experiences') await expect(transcript).toContainText("it's a website. not popcorn.");
+    if (name === 'Styling your space') await expect(transcript).toContainText('my room has no personality');
     await page.locator('#service-inquire').click();
     await expect(page.locator('#service')).toHaveValue(name);
     await expect(page.locator('#name')).toBeFocused();
@@ -282,7 +288,14 @@ test('five actual service trailers decode, play with sound and stop on close', a
     expect(await page.locator('#trailer-video').evaluate(v => v.muted)).toBe(false);
     await expect.poll(() => page.locator('#trailer-video').evaluate(v => v.currentTime)).toBeGreaterThan(0);
     expect(await page.locator('#service-preview').evaluate(v => v.paused)).toBeTruthy();
-    if (name === 'Web experiences') await page.locator('#trailer-dialog').screenshot({ path: `artifacts/service-trailer-dialog-${testInfo.project.name}.png` });
+    if (name === 'Web experiences') {
+      await page.locator('#trailer-video').evaluate(v => { v.pause(); v.currentTime = 11.4; });
+      await expect.poll(() => page.locator('#trailer-video').evaluate(v => !v.seeking && v.readyState >= 2)).toBeTruthy();
+      await page.locator('#trailer-dialog').screenshot({ path: `artifacts/service-trailer-dialog-${testInfo.project.name}.png` });
+      const transcript = page.locator('#trailer-dialog .chat-transcript');
+      await transcript.locator('summary').click();
+      await expect(transcript).toContainText("it's a website. not popcorn.");
+    }
     await page.keyboard.press('Escape');
     await expect(page.locator('#trailer-dialog')).toBeHidden();
     expect(await page.locator('#trailer-video').evaluate(v => v.paused)).toBeTruthy();

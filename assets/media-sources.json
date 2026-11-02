@@ -116,9 +116,11 @@
   "service_trailers": {
     "provenance": "services/sources.json",
     "renderer": "../tools/render-service-trailers.py",
+    "copy": "../service-chat-content.js",
     "duration_seconds": 12,
     "count": 5,
-    "sound": "Original synthesized instrumental pulse",
-    "imagery": "Existing project footage and portfolio imagery; Studio+ images are interior concepts"
+    "sound": "Original plucked bass, toy-keyboard melody, woodblocks, typing ticks and message pops; no samples",
+    "imagery": "Text-only motion graphics; no photographic or generated imagery",
+    "conversation": "Fictional chats describing real services"
   }
 }

@@ -1,35 +1,37 @@
+import serviceChats from './service-chat-content.js';
+
 const films = {
   strategy: {
     name: 'Strategy & storytelling', category: 'DIRECTION',
-    description: 'Find the story worth telling. Give the business a direction people can understand, believe in, and act on.',
+    description: 'A lot of ideas. One clear direction. I turn the messy middle into positioning, a story, and a plan you can use.',
     scope: 'Positioning & messaging · Pitch narratives · Business & venture strategy',
     video: new URL('./assets/services/strategy.mp4', import.meta.url).href,
     poster: new URL('./assets/services/strategy.jpg', import.meta.url).href,
   },
   web: {
     name: 'Web experiences', category: 'DIGITAL',
-    description: 'Turn a first impression into a reason to stay. Purposeful design, expressive interactions, and websites built to do a job.',
+    description: 'Yes, it can look good and do its job. Thoughtful design, expressive interactions, and the code to make it all work.',
     scope: 'Creative direction · Interface design · Web development',
     video: new URL('./assets/services/web.mp4', import.meta.url).href,
     poster: new URL('./assets/services/web.jpg', import.meta.url).href,
   },
   brand: {
     name: 'Brand worlds', category: 'IDENTITY',
-    description: 'Build a coherent presence across the moments that matter—from the first introduction to the next launch.',
+    description: 'More than a logo having a good day. A recognisable identity that stays consistent wherever your business shows up.',
     scope: 'Brand identity · Visual systems · Motion & digital expression',
     video: new URL('./assets/services/brand.mp4', import.meta.url).href,
     poster: new URL('./assets/services/brand.jpg', import.meta.url).href,
   },
   styling: {
     name: 'Styling your space', category: 'INTERIORS',
-    description: 'Bring a room into focus. A considered direction for layout, furniture, materials and the personal details that make a space yours, through SECHA Studio+.',
+    description: 'Your room, with a little more intention. Layout, materials, furniture and the details that make it feel like you, through SECHA Studio+.',
     scope: 'Concepts & moodboards · Room planning · Finish & styling palettes',
     video: new URL('./assets/services/styling.mp4', import.meta.url).href,
     poster: new URL('./assets/services/styling.jpg', import.meta.url).href,
   },
   ventures: {
     name: 'Ventures & real estate', category: 'ADVISORY',
-    description: 'Bring commercial thinking into the build. Connect the opportunity, the operating model, and the next decision.',
+    description: 'The exciting idea meets the spreadsheet. Commercial strategy and operating decisions that give the next move a proper foundation.',
     scope: 'Development strategy · PropTech roadmaps · Commercial advisory',
     video: new URL('./assets/services/ventures.mp4', import.meta.url).href,
     poster: new URL('./assets/services/ventures.jpg', import.meta.url).href,
@@ -86,7 +88,7 @@ export function initServiceTrailers() {
     manualPreviewPause = false;
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.previewService === id)));
     document.querySelector('#service-category').replaceChildren(
-      document.createTextNode(`${film.category} / JOPELO STUDIO `),
+      document.createTextNode(`${film.category} / JOPELO CHATS `),
       Object.assign(document.createElement('span'), { textContent: '00:12' }),
     );
     const title = document.querySelector('#service-title');
@@ -95,6 +97,17 @@ export function initServiceTrailers() {
     document.querySelector('#service-scope').textContent = film.scope;
     document.querySelector('#service-inquire').dataset.service = film.name;
     document.querySelector('#trailer-dialog-inquire').dataset.service = film.name;
+    const messages = serviceChats[id].messages;
+    for (const list of document.querySelectorAll('[data-chat-transcript]')) {
+      list.replaceChildren(...messages.map(message => {
+        const item = document.createElement('li');
+        const speaker = document.createElement('strong');
+        speaker.textContent = message.sender === 'you' ? 'You: ' : 'JOPELO: ';
+        item.append(speaker, document.createTextNode(message.text));
+        return item;
+      }));
+    }
+    document.querySelectorAll('.chat-transcript').forEach(details => { details.open = false; });
     status.hidden = true;
     pausePreview();
     preview.muted = true;
@@ -134,14 +147,14 @@ export function initServiceTrailers() {
     const film = films[current];
     pausePreview();
     document.querySelector('#trailer-dialog-title').textContent = film.name;
-    document.querySelector('#trailer-dialog-category').textContent = `${film.category} / JOPELO STUDIO`;
+    document.querySelector('#trailer-dialog-category').textContent = `${film.category} / JOPELO CHATS`;
     fullVideo.poster = film.poster;
     fullVideo.src = film.video;
     fullVideo.setAttribute('aria-label', `${film.name} full service trailer`);
     fullVideo.muted = false;
     fullVideo.volume = .65;
     fullVideo.load();
-    fullStatus.textContent = 'A JOPELO studio film. 12 seconds.';
+    fullStatus.textContent = '12 seconds. Made-up chat. Real services. Original music.';
     if (!dialog.open) dialog.showModal();
     fullVideo.play().catch(() => { fullStatus.textContent = 'Press play to start the trailer.'; });
   });

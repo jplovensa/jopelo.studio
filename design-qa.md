@@ -2,6 +2,42 @@
 
 final result: passed
 
+## Current scope: deadpan service chats
+
+Reworked all five Capabilities trailers to the user's new direction: text-message motion graphics, lowercase deadpan humour and playful music, with serious service value. The previous cinematic imagery is removed from these five films. Existing Work and Studio+ portfolio sections retain their project content.
+
+Each fictional exchange has five messages over 12 seconds. Typing dots lead each message; letters appear progressively; bubbles settle by 8 px; completed replies receive read receipts. A cream chat canvas, green outgoing messages and dark green header suggest familiar messaging without WhatsApp branding. Every conversation ends with a concrete service offering and understated joke. Shared copy: `service-chat-content.js`.
+
+## Visual and audio review
+
+Reviewed actual encoded frames at 1.2, 3.1, 7.2 and 11.3 seconds across all five films in `artifacts/service-film-contact-sheet.jpg`. Desktop/mobile section captures: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Full-player captures: `artifacts/service-trailer-dialog-desktop.png` and `artifacts/service-trailer-dialog-mobile.png`.
+
+The section retains the user's selected featured-player/five-card layout. Added the line “unserious chat. serious work.”, “Play the chat” action and readable HTML transcripts in both locations. Typography in the actual films was increased from 38 to 44 px after mobile review; the longest line fits within 830 px of the 1000 px text-safe area. Posters use larger 52 px hook/reply text. All five messages fit above the 640 px footer boundary. No photographic or generated imagery appears in these trailers.
+
+Original music is a 100 BPM plucked-bass/toy-keyboard motif, dry woodblocks, typing ticks, message pops and a short descending synth after the final reply. Service-specific transpositions vary the loop. No borrowed tracks, samples or notification recordings are used. The initial mix was too quiet; the final score is raised by 3× with peak headroom and fade-in/out. Previews remain muted; explicit playback enables sound at adjustable native volume.
+
+## Interaction and accessibility
+
+- All five choices change the video, poster, service detail, enquiry mapping and both transcripts.
+- HTML transcripts expose every message without animation or audio; fictional conversations are labelled clearly.
+- Reduced motion disables automatic playback. Global pause, visibility, viewport eligibility and manual pause remain supported.
+- Keyboard arrows/Home/End select cards. Native modal focus, Close/Escape/backdrop and enquiry handoff work; dismissal immediately stops sound.
+- Native playback, seeking, volume and fullscreen controls remain available. Controls briefly overlay the video when active; transcripts provide persistent access to all copy.
+
+## Validation
+
+30 desktop/mobile Chromium tests passed, including shared-copy transcripts, all five actual decodes, 12-second duration, 1280 × 720 dimensions, sound-enabled explicit playback and immediate pause on dismissal. Targeted playback checks were repeated after final media revisions. Responsive review passed at 390, 641, 768, 900, 901, 1024, 1180 and 1440 px without overflow. Production base-path build and JavaScript/Python syntax checks passed.
+
+Five fidelity surfaces: existing Inter typography and charcoal/orange site tokens retained; chat typography increased for small screens; featured-player/card spacing preserved; original text-only assets replace imagery; service copy remains specific about strategy, design/development, identity, interiors and commercial advisory. No actionable P0/P1/P2 findings remain after typography and audio-level fixes.
+
+Coverage is Chromium desktop/mobile emulation; physical devices, Safari and Firefox were not tested. Prior design targets below describe earlier revisions and are superseded by this text-chat direction.
+
+---
+
+# Previous revision: cinematic catalogue
+
+final result: passed
+
 ## Current scope: cinematic service catalogue
 
 Implemented user-selected Style 2, revised to use existing project media and restrained studio typography. Target: `artifacts/capabilities-selected-target.png` (1487 × 1058). The selected composition is a featured landscape player, service details and two actions, with five landscape cards below. Mobile places a horizontally scrolling card rail between the player and service details.
