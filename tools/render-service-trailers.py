@@ -3,7 +3,7 @@
 Requires Python 3, Pillow, NumPy and FFmpeg (libx264/AAC).
 Run: python tools/render-service-trailers.py [optional service IDs]
 Copy is shared with the accessible browser transcripts in service-chat-content.js.
-All graphics, animation and music are authored here; no third-party sound samples.
+All graphics, animation and sound are authored here; no third-party sound samples.
 """
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -21,6 +21,7 @@ CACHE = ROOT / '.cache/service-chats'
 CACHE.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
 FPS, WIDTH, HEIGHT, DURATION, RATE = 24, 1280, 720, 12, 48000
+TYPE_RATE = 44  # The same timing drives text reveal and keyboard foley.
 FILMS = json.loads((ROOT/'service-chat-content.js').read_text().removeprefix('export default ').strip().removesuffix(';'))
 FONT = ROOT/'assets/inter-regular.ttf'
 BOLD = ROOT/'assets/inter-black.ttf'
@@ -52,10 +53,10 @@ def base(film, t, poster=False):
     typing = any(m['at']-.55 <= t < m['at'] for m in film['messages'])
     d.text((117, 62), 'typing...' if typing else 'online. doing the work.', font=FONTS[22], fill='#d5e7d9')
     label = film['name'].lower()
-    d.text((WIDTH-38-d.textlength(label, font=FONTS[24]), 36), label, font=FONTS[24], fill=WHITE)
-    d.text((38, 116), 'a fictional chat. actual services.', font=FONTS[20], fill='#687269')
+    d.text((WIDTH-38-d.textlength(label, font=HEAVY[36]), 30), label, font=HEAVY[36], fill=WHITE)
+    d.text((38, 114), film['deliverables'], font=FONTS[28], fill=GREEN)
     d.line((38, 640, 1242, 640), fill='#c6c9bd', width=1)
-    d.text((38, 665), 'unserious chat. serious work.', font=HEAVY[28], fill=GREEN)
+    d.text((38, 665), 'fictional chat. actual services.', font=HEAVY[28], fill=GREEN)
     d.text((1065, 671), 'JOPELO / '+str(list(FILMS).index(next(k for k,v in FILMS.items() if v is film))+1).zfill(2), font=FONTS[22], fill=GREEN)
     return im
 
@@ -66,7 +67,7 @@ def bubble(draw, message, y, t, poster=False):
     font = FONTS[44]
     lines = wrap(text, font, 1000)
     w = max(font.getlength(line) for line in lines)+52
-    h = 40+len(lines)*46
+    h = 30+len(lines)*46
     x = WIDTH-38-w if outgoing else 38
     age = max(0, t-message['at'])
     # A small 8 px settling movement rather than exaggerated elastic UI motion.
@@ -76,7 +77,7 @@ def bubble(draw, message, y, t, poster=False):
         draw.polygon(((x+w-20,y),(x+w+9,y),(x+w-2,y+22)), fill=BUBBLE)
     else:
         draw.polygon(((x+20,y),(x-9,y),(x+2,y+22)), fill=WHITE)
-    count = len(text) if poster else max(0, int(age*67))
+    count = len(text) if poster else max(0, int(age*TYPE_RATE))
     reveal = text[:count]
     # Wrap the full message first so letters don't jump between lines while typing.
     used = 0
@@ -100,7 +101,7 @@ def bubble(draw, message, y, t, poster=False):
 def frame(film, t):
     im = base(film, t)
     d=ImageDraw.Draw(im)
-    y=150
+    y=166
     for m in film['messages']:
         if t < m['at']:
             if t >= m['at']-.55:
@@ -134,46 +135,43 @@ def poster(film):
 
 
 def sound_design(film_id):
-    """Dry plucked bass + toy-keyboard motif, woodblocks and message pops. 100 BPM."""
-    rng=np.random.default_rng(43)
+    """Original keyboard foley synced to dots/reveals, plus quiet message pops.
+
+    Deliberate gaps keep the timing deadpan. No melodic music or borrowed samples.
+    """
+    rng=np.random.default_rng(43+list(FILMS).index(film_id))
     mix=np.zeros((RATE*DURATION,2),dtype=np.float64)
-    transpose={'strategy':0,'web':2,'brand':5,'styling':-2,'ventures':-5}[film_id]
     def add(when, signal, gain, pan=0):
-        start=int(when*RATE)
+        start=max(0,int(when*RATE))
         n=min(len(signal),len(mix)-start)
         if n<=0:return
         mix[start:start+n,0]+=signal[:n]*gain*math.sqrt((1-pan)/2)
         mix[start:start+n,1]+=signal[:n]*gain*math.sqrt((1+pan)/2)
-    def pluck(note, duration=.3, bass=False):
-        t=np.arange(int(duration*RATE))/RATE
-        hz=440*2**((note+transpose-69)/12)
-        env=(1-np.exp(-t*700))*np.exp(-t*(9 if bass else 16))
-        return (np.sin(2*np.pi*hz*t)+.32*np.sin(2*np.pi*hz*2.003*t)+.13*np.sin(2*np.pi*hz*3*t))*env
-    for beat in range(20):
-        when=beat*.6
-        add(when,pluck([36,43,40,43][beat%4],.4,True),.19,-.1)
-        if beat%2:
-            t=np.arange(int(.08*RATE))/RATE
-            wood=(np.sin(2*np.pi*780*t)+.3*np.sin(2*np.pi*1220*t))*np.exp(-65*t)
-            add(when+.035,wood,.055,.3)
-    melody=[(0.3,72),(.9,76),(1.8,79),(2.7,76),(3.0,74),(3.9,71),(4.5,72),(5.4,67),(6.3,72),(6.9,76),(7.8,79),(8.7,78)]
-    for i,(when,note) in enumerate(melody):
-        add(when,pluck(note,.28),.105,(-1 if i%2 else 1)*.25)
-    # A short, quiet downward wobble after the last reply; intentionally underplayed.
-    t=np.arange(int(.55*RATE))/RATE
-    frequency=330*2**(transpose/12)*np.exp(-1.1*t)
-    phase=np.cumsum(2*np.pi*frequency/RATE)
-    add(10.1,(np.sin(phase)+.2*np.sin(3*phase))*np.exp(-5*t)*np.minimum(1,t/.012),.095,.1)
+    def keypress(when, pan, space=False):
+        t=np.arange(int(.045*RATE))/RATE
+        noise=rng.normal(0,1,len(t))
+        # A soft broadband tap with a lower body and a short, sharper release.
+        click=(noise-np.roll(noise,1))*.19*np.exp(-t*330)
+        hz=rng.uniform(620,1050) if space else rng.uniform(1250,1950)
+        body=np.sin(2*np.pi*hz*t)*np.exp(-t*175)*.55
+        attack=np.minimum(1,t/.0008)
+        add(when,(click+body)*attack,rng.uniform(.16,.23),pan)
     for m in FILMS[film_id]['messages']:
-        t=np.arange(int(.06*RATE))/RATE
-        pop=np.sin(2*np.pi*(650*t-1800*t*t))*np.exp(-75*t)*np.minimum(1,t/.002)
-        add(m['at'],pop,.07,.25 if m['sender']=='jopelo' else -.25)
-        for when in (m['at']-.35,m['at']-.23,m['at']-.1):
-            tt=np.arange(int(.018*RATE))/RATE
-            add(max(0,when),rng.normal(0,1,len(tt))*np.exp(-400*tt),.012)
-    mix*=np.minimum(1,np.arange(len(mix))/RATE/.08)[:,None]
-    mix*=np.minimum(1,(len(mix)-np.arange(len(mix)))/RATE/.22)[:,None]
-    mix *= 3.0  # Audible at the player's 65% volume, with headroom for AAC encoding.
+        pan=.2 if m['sender']=='jopelo' else -.2
+        # The visible dots get a short, irregular pre-typing burst.
+        for offset in (-.43,-.31,-.19,-.08):
+            keypress(max(0,m['at']+offset),pan)
+        # Follow the actual letter reveal, leaving a little human variation.
+        for index in range(0,len(m['text']),2):
+            when=m['at']+index/TYPE_RATE+rng.uniform(0,.009)
+            keypress(when,pan,m['text'][index]==' ')
+        completed=m['at']+len(m['text'])/TYPE_RATE
+        t=np.arange(int(.085*RATE))/RATE
+        pop=np.sin(2*np.pi*(760*t-1900*t*t))*np.exp(-t*65)*np.minimum(1,t/.002)
+        add(completed+.025,pop,.13,pan)
+    mix*=np.minimum(1,np.arange(len(mix))/RATE/.025)[:,None]
+    mix*=np.minimum(1,(len(mix)-np.arange(len(mix)))/RATE/.08)[:,None]
+    mix *= .65 / max(.001,np.max(np.abs(mix)))
     assert np.max(np.abs(mix))<.95
     path=CACHE/(film_id+'-original-chat-score.wav')
     with wave.open(str(path),'wb') as f:
@@ -206,10 +204,10 @@ def main():
         list(pool.map(render,ids))
     provenance={
         'format':'12 seconds / 1280×720 / 24fps / H.264 + AAC stereo',
-        'direction':'Original text-only messaging motion graphics. Fictional exchanges, real service offerings. No photographic imagery.',
+        'direction':'Original text-only messaging motion graphics. Fictional deadpan exchanges with a persistent service title and deliverables strip. No photographic imagery.',
         'copy':'../../service-chat-content.js',
         'renderer':'../../tools/render-service-trailers.py',
-        'sound':'Original 100 BPM plucked bass, toy-keyboard melody, woodblocks, message pops and a small descending synth. Authored with NumPy; no samples or borrowed music.',
+        'sound':'Original soft keyboard foley synchronized to typing dots and 44-character-per-second text reveals, with message pops on completion. No melodic music, third-party recordings or borrowed samples.',
         'fonts':['../inter-regular.ttf','../inter-black.ttf'],
         'films':{k:{'name':v['name'],'file':k+'.mp4','poster':k+'.jpg'}for k,v in FILMS.items()},
         'icon':{'name':'Bootstrap Icons play-fill','source':'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/play-fill.svg','license':'bootstrap-icons-LICENSE.txt'}

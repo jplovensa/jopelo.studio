@@ -2,35 +2,25 @@
 
 final result: passed
 
-## Current scope: deadpan service chats
+## Current scope: service-led deadpan chats with typing sound
 
-Reworked all five Capabilities trailers to the user's new direction: text-message motion graphics, lowercase deadpan humour and playful music, with serious service value. The previous cinematic imagery is removed from these five films. Existing Work and Studio+ portfolio sections retain their project content.
+Revised all five trailers so the work remains clear throughout: the service name is now a prominent 36 px bold header and a persistent 28 px deliverables strip sits above the messages. Each chat explicitly describes the service in first person, with understated asides. Example: “yeah. and load properly.” followed by “i design + code the whole website.” The cream/green messaging aesthetic, 44 px message typography, 16:9 player and five-card layout remain.
 
-Each fictional exchange has five messages over 12 seconds. Typing dots lead each message; letters appear progressively; bubbles settle by 8 px; completed replies receive read receipts. A cream chat canvas, green outgoing messages and dark green header suggest familiar messaging without WhatsApp branding. Every conversation ends with a concrete service offering and understated joke. Shared copy: `service-chat-content.js`.
+Typing slows to 44 characters per second. Five compact message bubbles fit above the footer with space to spare. Shared dialogue and deliverables are authored in `service-chat-content.js`; the accessible HTML transcripts use the same messages.
 
-## Visual and audio review
+The melodic music is removed. Original soft keyboard foley follows the typing-dot bursts and actual text reveal, with a small pop after each completed message. Deliberate silent gaps preserve the deadpan pacing. Audio is synthesized locally with no samples or borrowed recordings. Player copy now says “Keyboard clicks + message pops.” Explicit playback enables sound; previews remain muted.
 
-Reviewed actual encoded frames at 1.2, 3.1, 7.2 and 11.3 seconds across all five films in `artifacts/service-film-contact-sheet.jpg`. Desktop/mobile section captures: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Full-player captures: `artifacts/service-trailer-dialog-desktop.png` and `artifacts/service-trailer-dialog-mobile.png`.
+## Evidence and verification
 
-The section retains the user's selected featured-player/five-card layout. Added the line “unserious chat. serious work.”, “Play the chat” action and readable HTML transcripts in both locations. Typography in the actual films was increased from 38 to 44 px after mobile review; the longest line fits within 830 px of the 1000 px text-safe area. Posters use larger 52 px hook/reply text. All five messages fit above the 640 px footer boundary. No photographic or generated imagery appears in these trailers.
+- Reviewed final frames from every film in `artifacts/service-film-contact-sheet.jpg` at 1.2, 3.3, 7.5 and 11.3 seconds; service names and deliverables remain visible in all states.
+- Desktop/mobile section evidence: `artifacts/capabilities-desktop.png` and `artifacts/capabilities-mobile.png`. Full player: `artifacts/service-trailer-dialog-desktop.png` and `artifacts/service-trailer-dialog-mobile.png`.
+- Final media: all five decode as 12-second 1280 × 720 H.264 with stereo AAC. Decoded peaks are below 0.63; typing-burst RMS is 0.047–0.059. Intended quiet gaps and the ending are silent; no clipping.
+- 30 Chromium desktop/mobile tests pass, including updated transcripts, each actual video, explicit sound playback, dismissal, reduced motion, motion pause, enquiries and existing site behavior.
+- Desktop/mobile and six intermediate width reviews pass without overflow. Production base-path build and JavaScript/Python syntax checks pass.
 
-Original music is a 100 BPM plucked-bass/toy-keyboard motif, dry woodblocks, typing ticks, message pops and a short descending synth after the final reply. Service-specific transpositions vary the loop. No borrowed tracks, samples or notification recordings are used. The initial mix was too quiet; the final score is raised by 3× with peak headroom and fade-in/out. Previews remain muted; explicit playback enables sound at adjustable native volume.
+Five fidelity surfaces: local Inter and existing site type hierarchy retained; compact chat spacing keeps all five messages visible; familiar cream/green chat colors retain contrast; trailers remain text-only; service names, specific deliverables and first-person copy keep the offering clear. No actionable P0/P1/P2 issues remain.
 
-## Interaction and accessibility
-
-- All five choices change the video, poster, service detail, enquiry mapping and both transcripts.
-- HTML transcripts expose every message without animation or audio; fictional conversations are labelled clearly.
-- Reduced motion disables automatic playback. Global pause, visibility, viewport eligibility and manual pause remain supported.
-- Keyboard arrows/Home/End select cards. Native modal focus, Close/Escape/backdrop and enquiry handoff work; dismissal immediately stops sound.
-- Native playback, seeking, volume and fullscreen controls remain available. Controls briefly overlay the video when active; transcripts provide persistent access to all copy.
-
-## Validation
-
-30 desktop/mobile Chromium tests passed, including shared-copy transcripts, all five actual decodes, 12-second duration, 1280 × 720 dimensions, sound-enabled explicit playback and immediate pause on dismissal. Targeted playback checks were repeated after final media revisions. Responsive review passed at 390, 641, 768, 900, 901, 1024, 1180 and 1440 px without overflow. Production base-path build and JavaScript/Python syntax checks passed.
-
-Five fidelity surfaces: existing Inter typography and charcoal/orange site tokens retained; chat typography increased for small screens; featured-player/card spacing preserved; original text-only assets replace imagery; service copy remains specific about strategy, design/development, identity, interiors and commercial advisory. No actionable P0/P1/P2 findings remain after typography and audio-level fixes.
-
-Coverage is Chromium desktop/mobile emulation; physical devices, Safari and Firefox were not tested. Prior design targets below describe earlier revisions and are superseded by this text-chat direction.
+Coverage is Chromium desktop/mobile emulation. Safari, Firefox and physical devices were not tested. Fictional conversations remain labelled, and the contact form prepares an introduction without sending it. Earlier visual targets below describe superseded revisions.
 
 ---
 

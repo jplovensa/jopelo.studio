@@ -119,8 +119,8 @@
     "copy": "../service-chat-content.js",
     "duration_seconds": 12,
     "count": 5,
-    "sound": "Original plucked bass, toy-keyboard melody, woodblocks, typing ticks and message pops; no samples",
+    "sound": "Original synchronized soft keyboard foley and message pops; no melodic music or borrowed samples",
     "imagery": "Text-only motion graphics; no photographic or generated imagery",
-    "conversation": "Fictional chats describing real services"
+    "conversation": "Fictional deadpan chats, persistent service names and deliverables"
   }
 }

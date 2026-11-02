@@ -34,7 +34,9 @@ Each look opens an accessible native dialog with a larger image, material langua
 
 Capabilities keeps the featured-player and five-card layout, with text-only service trailers in a WhatsApp-inspired chat style. Five original 12-second animations use lowercase deadpan exchanges, letter-by-letter typing, animated dots, settling bubbles and read receipts. Each finishes with concrete service value. The fictional conversations do not imply real client messages. No photographs, generated imagery or cinematic project montages appear in these trailers.
 
-An original 100 BPM score combines plucked bass, a toy-keyboard melody, dry woodblocks, typing ticks, message pops and a small descending synth at the punchline. Each service has a different musical transposition. All sound is synthesized from scratch without samples or borrowed music. Each MP4 is 1280 × 720, 24 fps, H.264 with AAC stereo sound.
+The service title stays prominent throughout every film, with a persistent deliverables strip (for example “web design / development / interactions”). The chat explains the work in first person, with dry asides and specific outputs.
+
+Soft keyboard clicks form the soundtrack, synchronized to typing dots and the 44-character-per-second text reveal. A small message pop marks each completed reply; deliberate quiet gaps preserve the deadpan timing. The melodic music is removed. Sound is synthesized from scratch without samples or third-party recordings. Each MP4 is 1280 × 720, 24 fps, H.264 with AAC stereo sound.
 
 Visible previews play muted, respect motion preferences, and preserve a manual pause. “Play the chat” opens the full trailer with sound and native controls; Close, Escape, backdrop dismissal and enquiries immediately stop playback. Keyboard arrows, Home and End select cards. Each enquiry selects its matching contact option. “Read the chat” exposes the entire selected conversation as accessible HTML in both the service panel and full player.
 

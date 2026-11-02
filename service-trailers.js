@@ -154,7 +154,7 @@ export function initServiceTrailers() {
     fullVideo.muted = false;
     fullVideo.volume = .65;
     fullVideo.load();
-    fullStatus.textContent = '12 seconds. Made-up chat. Real services. Original music.';
+    fullStatus.textContent = '12 seconds. Made-up chat. Real services. Keyboard clicks + message pops.';
     if (!dialog.open) dialog.showModal();
     fullVideo.play().catch(() => { fullStatus.textContent = 'Press play to start the trailer.'; });
   });

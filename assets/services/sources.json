@@ -1,9 +1,9 @@
 {
   "format": "12 seconds / 1280×720 / 24fps / H.264 + AAC stereo",
-  "direction": "Original text-only messaging motion graphics. Fictional exchanges, real service offerings. No photographic imagery.",
+  "direction": "Original text-only messaging motion graphics. Fictional deadpan exchanges with a persistent service title and deliverables strip. No photographic imagery.",
   "copy": "../../service-chat-content.js",
   "renderer": "../../tools/render-service-trailers.py",
-  "sound": "Original 100 BPM plucked bass, toy-keyboard melody, woodblocks, message pops and a small descending synth. Authored with NumPy; no samples or borrowed music.",
+  "sound": "Original soft keyboard foley synchronized to typing dots and 44-character-per-second text reveals, with message pops on completion. No melodic music, third-party recordings or borrowed samples.",
   "fonts": [
     "../inter-regular.ttf",
     "../inter-black.ttf"

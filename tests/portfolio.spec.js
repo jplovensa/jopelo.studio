@@ -266,7 +266,7 @@ test('service catalogue selects all five films and carries each service to the b
     await transcript.locator('summary').click();
     await expect(transcript.locator('li')).toHaveCount(5);
     await expect(transcript.locator('li').nth(3)).toContainText('JOPELO:');
-    if (name === 'Web experiences') await expect(transcript).toContainText("it's a website. not popcorn.");
+    if (name === 'Web experiences') await expect(transcript).toContainText("i design + code the whole website.");
     if (name === 'Styling your space') await expect(transcript).toContainText('my room has no personality');
     await page.locator('#service-inquire').click();
     await expect(page.locator('#service')).toHaveValue(name);
@@ -294,7 +294,7 @@ test('five actual service trailers decode, play with sound and stop on close', a
       await page.locator('#trailer-dialog').screenshot({ path: `artifacts/service-trailer-dialog-${testInfo.project.name}.png` });
       const transcript = page.locator('#trailer-dialog .chat-transcript');
       await transcript.locator('summary').click();
-      await expect(transcript).toContainText("it's a website. not popcorn.");
+      await expect(transcript).toContainText("i design + code the whole website.");
     }
     await page.keyboard.press('Escape');
     await expect(page.locator('#trailer-dialog')).toBeHidden();
