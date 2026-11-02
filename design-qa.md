@@ -2,6 +2,52 @@
 
 final result: passed
 
+## Current scope: cinematic service catalogue
+
+Implemented user-selected Style 2, revised to use existing project media and restrained studio typography. Target: `artifacts/capabilities-selected-target.png` (1487 × 1058). The selected composition is a featured landscape player, service details and two actions, with five landscape cards below. Mobile places a horizontally scrolling card rail between the player and service details.
+
+The five authored films cover Strategy & storytelling, Web experiences, Brand worlds, Styling your space, and Ventures & real estate. Each is 12 seconds, 1280 × 720, 24fps H.264 with original AAC stereo sound design. Actual Fjäll/SECHA footage, site recordings, logos and existing portfolio imagery replace generated decorative props. Studio+ interiors retain their classification as concepts. Provenance: `assets/services/sources.json`; renderer: `tools/render-service-trailers.py`.
+
+## Visual evidence
+
+Opened and compared target and browser output in `artifacts/comparison-capabilities.png`, normalized to 720 px per panel. The hierarchy, dark palette, large left player, right details and five-card rail match the selected direction. Native controls, scope text and video-safe 16:9 geometry are deliberate functional adaptations.
+
+- Desktop section: `artifacts/capabilities-desktop.png` (1440 × 1032).
+- Mobile section: `artifacts/capabilities-mobile.png` (390 × 873).
+- Full player: `artifacts/service-trailer-dialog-desktop.png` and `artifacts/service-trailer-dialog-mobile.png`.
+- Film review: `artifacts/service-film-contact-sheet.jpg`, showing four frames from each of the five films.
+- Full page regression: `artifacts/desktop-full.png` and `artifacts/mobile-full.png`.
+
+Captures use Chromium at 1440 × 1000 and 390 × 844, device scale factor 1. Section comparison uses reduced motion and loaded media. Intermediate widths 641, 768, 900, 901, 1024 and 1180 px passed overflow and action-bound checks.
+
+## Findings and fixes
+
+No actionable P0/P1/P2 findings remain.
+
+1. P1: image height attributes overrode thumbnail geometry. Added explicit automatic image height; final screenshots and landscape-ratio regression confirm the fix. Before evidence: `artifacts/capabilities-initial-desktop.png` and `artifacts/capabilities-initial-mobile.png`.
+2. P1: Escape could hide the full player before its audio stopped. Pause now occurs synchronously on Escape, Close, backdrop and enquiry; desktop/mobile tests confirm immediate stop.
+3. P2: an unrelated body mutation could restart a manually paused preview. Eligibility-transition tracking preserves manual pause; interaction regression confirms it remains paused through other page controls.
+
+## Five fidelity surfaces
+
+- Typography: existing local Inter, strong display hierarchy and small editorial labels match the selected direction; service titles wrap without clipping.
+- Spacing: desktop split and five equal landscape cards preserve the target rhythm; mobile uses a scrollable rail and stacked details with visible actions.
+- Colors: existing charcoal, warm white and orange tokens; selected card uses the accent underline.
+- Assets: locally hosted footage and original portfolio images, proper 16:9 framing, original type edits, licensed Bootstrap play icon. No newly generated photographic scenes.
+- Copy: original service names, descriptions, scopes and enquiry mapping; no invented client results or claims of completed interiors.
+
+## Verification
+
+Latest Playwright result: **30 passed, 0 failed**, covering desktop/mobile, all five trailers, real playback and metadata, sound on explicit Watch, dismissal and enquiry handoff, keyboard selection, reduced motion/global pause/manual pause, and existing site features. Supplemental hover/backdrop checks and responsive review passed. Production build with `/jopelo.studio/` and JavaScript/Python syntax checks pass.
+
+Browser coverage is Chromium desktop/mobile emulation. Safari, Firefox and physical devices were not tested. Original sound is heard only after explicit Watch. Contact still prepares an introduction without sending it.
+
+---
+
+# Previous addition: styling portfolio
+
+final result: passed
+
 ## Scope
 
 Add a “Styling your space” service and bring the user’s design portfolio and taste into JOPELO. The user explicitly confirmed SECHA Studio+ as the portfolio source. This is a scoped addition in JOPELO’s existing visual language, not a full restyling of the website or a pixel clone of Studio+.

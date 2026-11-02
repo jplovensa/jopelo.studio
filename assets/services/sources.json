@@ -1,0 +1,46 @@
+{
+  "format": "12 seconds / 1280\u00d7720 / 24fps / H.264 + original AAC stereo sound design",
+  "photographic_assets": "Existing user portfolio footage, photography and Studio+ concepts; no newly generated photographic scenes",
+  "sources": {
+    "fjall-hero.mp4": "https://www.fjallgroup.com/assets/hero.mp4",
+    "secha-hero.mp4": "https://www.sechahome.com/assets/video/hero-dressing-room.mp4",
+    "josephine.png": "https://www.sechahome.com/studio/assets/designers/josephine.png",
+    "fjall-logo.png": "https://www.fjallgroup.com/assets/fjall-logo.png",
+    "secha-logo.png": "https://www.sechahome.com/assets/secha-logo.png",
+    "retrofit-interior.webp": "https://www.fjallgroup.com/assets/retrofit-interior.webp",
+    "nuanu.webp": "https://www.fjallgroup.com/assets/nuanu.webp"
+  },
+  "sound": "Original synthesized instrumental pulse; no third-party samples or Netflix audio",
+  "films": {
+    "strategy": {
+      "name": "Strategy & storytelling",
+      "file": "strategy.mp4",
+      "poster": "strategy.jpg"
+    },
+    "web": {
+      "name": "Web experiences",
+      "file": "web.mp4",
+      "poster": "web.jpg"
+    },
+    "brand": {
+      "name": "Brand worlds",
+      "file": "brand.mp4",
+      "poster": "brand.jpg"
+    },
+    "styling": {
+      "name": "Styling your space",
+      "file": "styling.mp4",
+      "poster": "styling.jpg"
+    },
+    "ventures": {
+      "name": "Ventures & real estate",
+      "file": "ventures.mp4",
+      "poster": "ventures.jpg"
+    }
+  },
+  "icon": {
+    "name": "Bootstrap Icons play-fill",
+    "source": "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/icons/play-fill.svg",
+    "license": "bootstrap-icons-LICENSE.txt"
+  }
+}

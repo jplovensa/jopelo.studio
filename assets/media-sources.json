@@ -57,8 +57,8 @@
     }
   ],
   "award": {
-    "name": "The Women\u2019s Tabloid Award",
-    "recognition": "Emerging Woman CEO \u2013 Real Estate 2024",
+    "name": "The Women’s Tabloid Award",
+    "recognition": "Emerging Woman CEO – Real Estate 2024",
     "recipient": "Josephine Petra Lovensa",
     "source": "https://awards.womenstabloid.com/awards/leadership-awards-2024/",
     "reference_page": "https://www.sechahome.com/"
@@ -112,5 +112,13 @@
         "classification": "Generated interior concept"
       }
     ]
+  },
+  "service_trailers": {
+    "provenance": "services/sources.json",
+    "renderer": "../tools/render-service-trailers.py",
+    "duration_seconds": 12,
+    "count": 5,
+    "sound": "Original synthesized instrumental pulse",
+    "imagery": "Existing project footage and portfolio imagery; Studio+ images are interior concepts"
   }
 }

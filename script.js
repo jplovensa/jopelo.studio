@@ -1,3 +1,4 @@
+import { initServiceTrailers } from './service-trailers.js';
 'use strict';
 const menu = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
@@ -82,3 +83,5 @@ styleDialog.addEventListener('click', event => {
   const bounds = styleDialog.getBoundingClientRect();
   if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) styleDialog.close();
 });
+
+initServiceTrailers();

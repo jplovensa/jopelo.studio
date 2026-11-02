@@ -29,7 +29,7 @@ test('page, assets, video playback and responsive layout', async ({ page }, test
     await expect(page.locator(`#${id} h2`)).toBeVisible();
   }
   await page.locator('#work').scrollIntoViewIfNeeded();
-  for (const video of await page.locator('video').all()) {
+  for (const video of await page.locator('.project-video').all()) {
     await expect.poll(() => video.evaluate(v => v.readyState)).toBeGreaterThanOrEqual(2);
     await video.evaluate(async v => { v.currentTime = 0; await v.play(); });
     await expect.poll(() => video.evaluate(v => v.currentTime)).toBeGreaterThan(0);
@@ -246,4 +246,89 @@ test('styling enquiry carries the chosen look without losing the existing brief'
   await expect(page.locator('#message')).toHaveValue(/styling your space/);
   await expect(page.locator('#message')).toHaveValue(/Earthy Retreat/);
   await expect(page.locator('#message')).toHaveValue(/Please keep my reading chair/);
+});
+
+
+test('service catalogue selects all five films and carries each service to the brief', async ({ page }) => {
+  await openSite(page);
+  const services = ['Strategy & storytelling', 'Web experiences', 'Brand worlds', 'Styling your space', 'Ventures & real estate'];
+  const thumbnailRatios = await page.locator('.service-thumb > img').evaluateAll(images => images.map(img => {
+    const bounds = img.getBoundingClientRect(); return bounds.width / bounds.height;
+  }));
+  expect(thumbnailRatios.every(ratio => Math.abs(ratio - 16 / 9) < .04)).toBeTruthy();
+  for (const name of services) {
+    const button = page.getByRole('button', { name: `Preview ${name}`, exact: true });
+    await button.click();
+    await expect(button).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#service-title')).toHaveText(name + '.');
+    await expect(page.locator('[data-preview-service][aria-pressed=true]')).toHaveCount(1);
+    await page.locator('#service-inquire').click();
+    await expect(page.locator('#service')).toHaveValue(name);
+    await expect(page.locator('#name')).toBeFocused();
+  }
+});
+
+test('five actual service trailers decode, play with sound and stop on close', async ({ page }, testInfo) => {
+  await openSite(page);
+  for (const name of ['Strategy & storytelling', 'Web experiences', 'Brand worlds', 'Styling your space', 'Ventures & real estate']) {
+    await page.getByRole('button', { name: `Preview ${name}`, exact: true }).click();
+    await page.locator('#service-watch').click();
+    await expect(page.locator('#trailer-dialog')).toBeVisible();
+    await expect(page.locator('#trailer-dialog-title')).toHaveText(name);
+    await expect.poll(() => page.locator('#trailer-video').evaluate(v => v.readyState)).toBeGreaterThanOrEqual(2);
+    expect(await page.locator('#trailer-video').evaluate(v => Math.round(v.duration))).toBe(12);
+    expect(await page.locator('#trailer-video').evaluate(v => v.videoWidth)).toBe(1280);
+    expect(await page.locator('#trailer-video').evaluate(v => v.videoHeight)).toBe(720);
+    expect(await page.locator('#trailer-video').evaluate(v => v.muted)).toBe(false);
+    await expect.poll(() => page.locator('#trailer-video').evaluate(v => v.currentTime)).toBeGreaterThan(0);
+    expect(await page.locator('#service-preview').evaluate(v => v.paused)).toBeTruthy();
+    if (name === 'Web experiences') await page.locator('#trailer-dialog').screenshot({ path: `artifacts/service-trailer-dialog-${testInfo.project.name}.png` });
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#trailer-dialog')).toBeHidden();
+    expect(await page.locator('#trailer-video').evaluate(v => v.paused)).toBeTruthy();
+    await expect(page.locator('#service-watch')).toBeFocused();
+  }
+});
+
+test('service previews respect global pause and reduced motion; keyboard selection works', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await openSite(page);
+  await page.locator('#capabilities').scrollIntoViewIfNeeded();
+  expect(await page.locator('#service-preview').evaluate(v => v.paused && v.muted)).toBeTruthy();
+  const first = page.getByRole('button', { name: 'Preview Strategy & storytelling', exact: true });
+  await first.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.getByRole('button', { name: 'Preview Web experiences', exact: true })).toBeFocused();
+  await expect(page.locator('#service-title')).toHaveText('Web experiences.');
+  await page.keyboard.press('End');
+  await expect(page.locator('#service-title')).toHaveText('Ventures & real estate.');
+  await page.keyboard.press('Home');
+  await expect(first).toBeFocused();
+  await expect(page.locator('#service-title')).toHaveText('Strategy & storytelling.');
+  await page.locator('#service-watch').click();
+  await expect.poll(() => page.locator('#trailer-video').evaluate(v => !v.paused && v.currentTime > 0)).toBeTruthy();
+  await page.getByRole('button', { name: 'Close trailer', exact: true }).click();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
+  await page.locator('#capabilities').scrollIntoViewIfNeeded();
+  expect(await page.locator('#service-preview').evaluate(v => v.paused)).toBeTruthy();
+  await page.getByRole('button', { name: 'Resume motion', exact: true }).click();
+  await page.locator('#service-preview').scrollIntoViewIfNeeded();
+  await expect.poll(() => page.locator('#service-preview').evaluate(v => !v.paused && v.muted)).toBeTruthy();
+  await page.locator('#service-preview').evaluate(v => v.pause());
+  await page.getByRole('button', { name: 'Pause awards', exact: true }).click();
+  await page.locator('#service-preview').scrollIntoViewIfNeeded();
+  expect(await page.locator('#service-preview').evaluate(v => v.paused)).toBeTruthy();
+});
+
+test('full trailer enquiry uses the selected service and closes playback', async ({ page }) => {
+  await openSite(page);
+  await page.getByRole('button', { name: 'Preview Brand worlds', exact: true }).click();
+  await page.locator('#service-watch').click();
+  await expect(page.locator('#trailer-dialog')).toBeVisible();
+  await page.locator('#trailer-dialog-inquire').click();
+  await expect(page.locator('#trailer-dialog')).toBeHidden();
+  await expect(page.locator('#service')).toHaveValue('Brand worlds');
+  await expect(page.locator('#name')).toBeFocused();
+  expect(await page.locator('#trailer-video').evaluate(v => v.paused)).toBeTruthy();
 });
