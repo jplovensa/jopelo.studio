@@ -43,3 +43,16 @@ All 12 Chromium tests passed: responsive layout without horizontal overflow, ass
 Live reference and implementation screenshots were compared at desktop and mobile sizes; see `design-qa.md`. Mobile service jumps use immediate scrolling to avoid a Chromium crash encountered with repeated smooth-scroll navigation. Desktop service navigation remains smooth. A local barcode SVG supplies the favicon.
 
 Verification covers desktop Chromium and Chromium mobile emulation; real-device Safari and Firefox have not been tested. External project/LinkedIn destinations were preserved, but messages were not sent and external sites were not audited.
+
+## Deployment
+
+GitHub Pages deploys automatically when changes are pushed to `main`, using `.github/workflows/deploy-pages.yml`. The workflow installs from the lockfile, builds with the `/jopelo.studio/` base path, and publishes only `dist/` through GitHub's Pages artifact deployment.
+
+Site: https://jplovensa.github.io/jopelo.studio/
+
+For a local production-path check:
+
+```sh
+npm run build -- --base=/jopelo.studio/
+npm run preview -- --host 0.0.0.0 --port 4174 --base=/jopelo.studio/
+```
