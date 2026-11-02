@@ -2,64 +2,64 @@
 
 final result: passed
 
-## Scope and source truth
+## Current scope
 
-Requested change: rearrange JOPELO sections using https://renando.duingzcreative.site/ as the ordering reference, preserve the JOPELO hero, and replace whole-word drift with vertical modular letter movement. This is a scoped arrangement/motion update, not a request to copy Renando's palette, identity, content, or components.
+Replace Fjäll Group and SECHA title sequences with recordings of their real website heroes, rewrite Fjäll Group’s portfolio description, add The Women’s Tabloid Award, and add official Antler, Iterative, Startupbootcamp, and Startup Studio Indonesia logos. The user confirmed Startup Studio Indonesia. The previously approved hero composition, six-letter modular movement, section order, and contact flow are retained.
 
-Captured source: `artifacts/reference-renando-desktop.png` and `artifacts/reference-renando-mobile.png`. Inspected the live reference in Chromium on desktop and mobile, including progressive scroll captures and heading text. Its relevant flow is selected work → recognition → about/skills → journey → contact. Its 3D process breakdown has no existing JOPELO counterpart and was not fabricated.
+## Source evidence
 
-JOPELO mapping: hero unchanged in position → Work → Recognition → Principal → Capabilities → Experience → Contact. Recognition and the institutional-background strip were moved out of Experience. Existing content, assets, project links, form, videos, and motion controls remain.
+- Live hero pages: https://www.fjallgroup.com/ and https://www.sechahome.com/.
+- Source captures: `artifacts/source-fjall-hero.png` and `artifacts/source-secha-hero.png`, each 1280 × 720 px.
+- Each site was opened in Chromium over the configured HTTPS proxy with TLS verification intact. Opening intros were dismissed. The actual hero background media was allowed to play, sound muted, and the viewport recorded. Intros and initial loading were trimmed away.
+- Local videos: `assets/fjall-trailer.mp4` and `assets/secha-trailer.mp4`. Both are 12-second 1280 × 720 H.264, 24 fps, silent, yuv420p, with faststart metadata. `ffprobe` and browser decoding verify dimensions/duration.
+- Recording frame evidence at 0, 6, and 11 seconds: `artifacts/recorded-hero-frames.jpg`.
+- Source/recorded-preview comparison boards: `artifacts/comparison-fjall-hero-preview.jpg` and `artifacts/comparison-secha-hero-preview.jpg`. Each combines the source capture and encoded poster in the same image; panels scale equally to 720 × 405 px. Ambient video phases differ, while headline, navigation, framing, and page identity match.
+- Official logo source URLs and capture metadata are saved in `assets/media-sources.json`. Antler’s original header SVG was copied verbatim; the other three assets were downloaded from the organizations’ official websites. No logos were redrawn or hotlinked.
+- Award detail and recipient are cited by SECHA and linked to https://awards.womenstabloid.com/awards/leadership-awards-2024/ : Emerging Woman CEO – Real Estate 2024, Josephine Petra Lovensa. No additional award category or year was invented.
 
-## Evidence and normalization
+## Implementation evidence
 
-| Evidence | Paths |
-| --- | --- |
-| Desktop order comparison, both sources in one image | `artifacts/comparison-section-order-desktop.png` |
-| Mobile order comparison, both sources in one image | `artifacts/comparison-section-order-mobile.png` |
-| Existing versus updated hero | `artifacts/comparison-hero-preservation-desktop.png`, `artifacts/comparison-hero-preservation-mobile.png` |
-| Latest implementation full views | `artifacts/desktop-full.png`, `artifacts/mobile-full.png` |
-| Latest hero views | `artifacts/desktop-hero.png`, `artifacts/mobile-hero.png` |
-| Focused relocated recognition | `artifacts/recognition-desktop.png`, `artifacts/recognition-mobile.png` |
-| Interaction states | `artifacts/mobile-menu.png`, `artifacts/desktop-contact.png`, `artifacts/mobile-contact.png` |
+Browser viewport: desktop 1440 × 1000 CSS px and mobile 390 × 844 CSS px, device scale factor 1. There is no density mismatch within comparisons. Native video controls are intentionally retained around the recorded website preview; they are not part of the recorded source website.
 
-Desktop viewport is 1440 × 1000 CSS px at deviceScaleFactor 1. Source full page is 1440 × 5239 px; updated JOPELO full page is 1440 × 6698 px. Mobile viewport is 390 × 844 CSS px at density 1; source full page is 390 × 5952 px and updated JOPELO is 390 × 7460 px. There is no density mismatch. Full-page heights intentionally differ because JOPELO retains its own hero, content, and typography. Desktop comparison panels are scaled to 720 px wide; mobile panels remain 390 px wide. Hero panels compare matching viewport dimensions.
+- Full implementation: `artifacts/desktop-full.png` (1440 × 7054), `artifacts/mobile-full.png` (390 × 7905).
+- Focused project cards: `artifacts/work-desktop.png` (1440 × 1069), `artifacts/work-mobile.png` (390 × 1396).
+- Focused recognition/logos: `artifacts/recognition-desktop.png` (1440 × 1052), `artifacts/recognition-mobile.png` (390 × 1012).
+- Existing hero captures: `artifacts/desktop-hero.png`, `artifacts/mobile-hero.png`.
 
-Source order screenshots use reduced motion for stable capture. Implementation hero/full screenshots dismiss the opening, load local fonts, pause motion, and reveal section headings. Letter positions vary by animation phase; that is the requested motion change. Project video frames and recognition marquee phases are not used for precise pixel matching.
+Full-page captures use normal motion, dismissed studio intro, loaded fonts, revealed headings and paused previews. Focused content captures use reduced motion to inspect the wrapped award and all venture logos. Ambient movie position and native control paint may differ by frame; the videos were also tested while playing, not accepted from posters alone.
 
-## Findings
+## Findings and comparison history
 
-No actionable P0/P1/P2 findings remain within the requested scope.
+No actionable P0/P1/P2 issue remains in the requested scope.
 
-- Section order now follows the reference's relevant progression. Navigation follows the same order, and section numbering is sequential from 01 through 06. Principal and Capabilities together map to the reference's about/skills region, before Experience.
-- The hero keeps its portrait framing, crop, gradient mask, headline, copy, CTA, principal credit, and barcode. Only the large JOPELO text animation changes. Each of six letters occupies a fixed horizontal module and moves between three vertical positions with staggered timing and held intervals. No horizontal translation is introduced.
-- The expanded navigation remains within the viewport at 641, 768, and 1000 px; the auxiliary location label is hidden at tablet widths to provide space.
-- Recognition is now independently navigable, with its pause control and existing LinkedIn credentials link retained. Its reduced-motion mobile layout was inspected at full resolution.
+1. Initial recording inspection found the sites’ full-screen opening films. Final captures explicitly exclude these and record the actual hero views instead. A transient SECHA loading/play-toggle race was resolved by waiting for its hero media and recording it playing muted. Final frame comparisons show the intended websites, not intro films or loading pages.
+2. Initial logo review identified a P2 contrast issue: Startup Studio Indonesia’s official horizontal wordmark is white and was hard to read on paper. Its tile now uses the existing dark token, retaining the white/red brand asset without recoloring it. Post-fix evidence: both focused Recognition captures. The other three marks remain on light tiles.
+3. Updated old “opening sequence/title treatment” copy to describe website hero previews and rewrote Fjäll Group’s description from its current construction technology, design, EPS, and modular building content. The portfolio card no longer uses Josephine’s Chief Business Officer role as the project description.
+4. Added the award to both marquee copies, its static details and source link, and Principal recognition copy. Reduced-motion text wraps so the longer name is not clipped.
+5. Added opacity-based offscreen skip-link hiding while preserving keyboard focus visibility. Project autoplay is initiated by the existing preference-aware script rather than the HTML attribute, with deferred loading for reduced-motion visitors. Normal autoplay, pause/resume, actual video decoding, and reduced-motion behavior pass regression checks.
+6. Final Chromium run: **16 passed, 0 failed**, with zero console or uncaught runtime errors. Supplemental desktop/mobile captures verified all four logos load and reduced-motion layouts have no horizontal overflow. Source/encoded-preview comparisons and the focused project/recognition views were inspected after the fixes.
 
 ## Required fidelity surfaces
 
-- Fonts and typography: existing local Inter regular/black files, heading hierarchy, wrapping, and interface weights are preserved. New Recognition heading uses the existing section heading system. Hero baseline comparison confirms its text wrapping is preserved.
-- Spacing/layout rhythm: preserved hero stage and copy placement; existing section spacing and grid treatment retained while moving sections in actual DOM order. New Recognition uses existing section spacing. No horizontal overflow at desktop/mobile or checked tablet widths.
-- Colors/tokens: JOPELO's existing paper, dark, muted, red, and gold palette is preserved. Renando's colors are outside this scoped request.
-- Asset fidelity: existing portrait, films, posters, barcode, icon, and fonts are retained without replacements or hotlinks. Video playback remains functional. The reference contributes ordering only.
-- Copy/content: existing JOPELO content is preserved. Recognition gets a heading and a short introduction drawn from existing claims; no new awards, statistics, timelines, or affiliations were invented. Section labels and navigation now match the new flow.
+- Fonts/typography: JOPELO’s existing local Inter fonts, heading sizes, and modular hero remain. The recorded heroes retain their own real source typography. New award details use the existing type hierarchy, and the long award name wraps under reduced motion.
+- Spacing/layout: project cards retain the existing desktop two-column and mobile stacked layout, with 16:9 video viewports. Venture marks form four columns on desktop and two on mobile. Institutional background is retained below them. Existing section order and navigation remain unchanged.
+- Colors/tokens: existing paper/dark/red/gold palette remains. Logos retain official colors; the white SSI mark uses a dark tile for contrast.
+- Image/asset fidelity: actual live hero recordings, H.264 compression, generated source-frame posters, and official local logo assets replace the old title sequences/text-only venture strip. Both videos decode and play at the intended dimensions. No placeholder graphics or handmade brand marks are used.
+- Copy/content: Fjäll Group is correctly accented in its project card and link; its description now explains the website and construction technology proposition. The Women’s Tabloid recognition includes its verified recipient/category/year and source link. “Venture background” avoids claiming every organization directly invested capital. Existing UNHCR background remains.
 
-## Iteration history
+## Validation
 
-1. Previous browser-verified site passed 12 tests. Its hero screenshots form the preservation baseline.
-2. Captured Renando desktop/mobile reference and mapped the existing content without adding an unsupported 3D breakdown.
-3. Reordered sections and navigation, separated Recognition, and added modular letter keyframes. Updated the motion test to inspect the individual animated letters rather than the now-stationary outer wrapper.
-4. First scoped verification: 14 tests passed; captured and inspected desktop/mobile hero and whole-page sequence boards.
-5. Strengthened checks for all-letter pause/reduced-motion behavior, staggered delays, zero horizontal movement, and distinct simultaneous vertical offsets. Final run: **14 passed, 0 failed**, with no browser console or uncaught runtime errors. No visual P0/P1/P2 fixes were necessary after comparison. Supplemental tablet width checks passed at 641, 768, and 1000 px.
+`npm test`: 16 desktop/mobile Chromium checks passed. Includes actual playback of both clips, 12-second duration and 1280 × 720 resolution, all four image assets, source-linked award details, rewritten copy, preserved section/nav sequence, six-letter hero motion/pause/reduced motion, keyboard skip link, menu/Escape, all service choices, form validation, clipboard, and studio intro focus restoration.
 
-Earlier mobile smooth-scroll and favicon fixes remain in place and were covered by the regression suite.
+`npm run build -- --base=/jopelo.studio/` and `node --check script.js` pass. The module entry is relative so it also resolves correctly under project subpaths.
 
-## Validation and implementation checklist
+## Checklist and limits
 
-- [x] Reference desktop/mobile capture and DOM section inspection.
-- [x] Combined source/implementation ordering comparisons and hero baseline comparisons.
-- [x] Focused Recognition review.
-- [x] 14 passing Chromium tests, including actual film playback, navigation/menu/Escape, contact form/clipboard, intro replay/skip/focus restoration, all-letter pause/reduced motion, and section order.
-- [x] Tablet header and horizontal-width checks.
-- [x] Production build and JavaScript syntax checks.
+- [x] Actual hero recordings and matching posters.
+- [x] Rewritten Fjäll Group card.
+- [x] The Women’s Tabloid Award and source-linked details.
+- [x] Four official venture logos, including user-confirmed Startup Studio Indonesia.
+- [x] Final browser checks and visual review after fixes.
+- [x] Asset provenance recorded.
 
-Browser coverage is desktop Chromium and mobile emulation; physical-device Safari and Firefox remain untested. The contact form prepares an introduction and does not send messages. Historical original-clone comparison PNGs remain in `artifacts/`; use the section-order and hero-preservation boards listed above for this revision.
+Coverage is Chromium desktop and mobile emulation. Physical devices, Safari, and Firefox were not tested. Historical ordering/hero-preservation boards in `artifacts/` document the earlier revision; use the new media comparisons and focused views for this update. External award and organization pages were linked, not modified.

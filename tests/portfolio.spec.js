@@ -72,6 +72,9 @@ test('hero moves vertically, pause and resume work', async ({ page }) => {
 
 test('menu and section navigation', async ({ page }, testInfo) => {
   await openSite(page);
+  await page.keyboard.press('Tab');
+  await expect(page.locator('.skip')).toBeFocused();
+  await expect(page.locator('.skip')).toHaveCSS('opacity', '1');
   if (testInfo.project.name === 'mobile') {
     const menu = page.locator('.menu-toggle');
     await menu.click();
@@ -150,4 +153,29 @@ test('sections and navigation follow the reference sequence', async ({ page }) =
   await expect(page.locator('#experience .awards')).toHaveCount(0);
   const delays = await page.locator('.kinetic-letter').evaluateAll(letters => letters.map(el => getComputedStyle(el).animationDelay));
   expect(new Set(delays).size).toBe(6);
+});
+
+test('recorded hero previews, award and four venture logos', async ({ page }) => {
+  await openSite(page);
+  await expect(page.locator('.project-fjall h3')).toHaveText('Fjäll Group');
+  await expect(page.locator('.project-fjall p')).toContainText('EPS building systems');
+  await expect(page.locator('.project-fjall p')).not.toContainText('Chief Business Officer');
+  await page.locator('#work').scrollIntoViewIfNeeded();
+  for (const video of await page.locator('.project-video').all()) {
+    await expect.poll(() => video.evaluate(v => v.readyState)).toBeGreaterThanOrEqual(2);
+    expect(await video.evaluate(v => v.duration)).toBeCloseTo(12, 0);
+    expect(await video.evaluate(v => v.videoWidth)).toBe(1280);
+    expect(await video.evaluate(v => v.videoHeight)).toBe(720);
+    await expect(video).toHaveAttribute('aria-label', /live website hero preview/);
+  }
+  await page.locator('#recognition').scrollIntoViewIfNeeded();
+  await expect(page.locator('.awards-group').first()).toContainText('The Women’s Tabloid Award');
+  await expect(page.locator('.award-detail h3')).toHaveText('Emerging Woman CEO – Real Estate 2024');
+  await expect(page.locator('.award-detail a')).toHaveAttribute('href', 'https://awards.womenstabloid.com/awards/leadership-awards-2024/');
+  await page.locator('.venture-logos').scrollIntoViewIfNeeded();
+  expect(await page.locator('.venture-logos img').evaluateAll(imgs => imgs.map(img => img.alt))).toEqual(['Antler', 'Iterative', 'Startupbootcamp', 'Startup Studio Indonesia']);
+  for (const img of await page.locator('.venture-logos img').all()) {
+    await expect.poll(() => img.evaluate(i => i.complete && i.naturalWidth > 0)).toBeTruthy();
+    await expect(img).toBeVisible();
+  }
 });

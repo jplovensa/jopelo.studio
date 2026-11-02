@@ -1,0 +1,66 @@
+{
+  "hero_recordings": [
+    {
+      "project": "fjall",
+      "source_url": "https://www.fjallgroup.com/",
+      "recorded_at": "2026-11-02T15:05:07.908Z",
+      "capture": "Live Chromium viewport after skipping the opening intro; hero background media playing muted",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "duration_seconds": 12,
+      "video": "fjall-trailer.mp4",
+      "poster": "fjall-poster.jpg",
+      "encoding": "H.264, 1280x720, 24fps, no audio, faststart"
+    },
+    {
+      "project": "secha",
+      "source_url": "https://www.sechahome.com/",
+      "recorded_at": "2026-11-02T15:08:23.584Z",
+      "capture": "Live Chromium viewport after skipping the opening intro; hero background media playing muted",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "duration_seconds": 12,
+      "video": "secha-trailer.mp4",
+      "poster": "secha-poster.jpg",
+      "encoding": "H.264, 1280x720, 24fps, no audio, faststart"
+    }
+  ],
+  "venture_logos": [
+    {
+      "name": "Antler",
+      "file": "logos/antler.svg",
+      "source": "https://www.antler.co/",
+      "method": "Original inline header logo SVG, copied without redrawing"
+    },
+    {
+      "name": "Iterative",
+      "file": "logos/iterative.webp",
+      "source": "https://cdn.prod.website-files.com/60b1bd0542d31f178d12f8e5/60b1bf54d2a4d962883ac95d_logo-black-on-white.webp",
+      "website": "https://www.iterative.vc/"
+    },
+    {
+      "name": "Startupbootcamp",
+      "file": "logos/startupbootcamp.svg",
+      "source": "https://cdn.prod.website-files.com/63f3e085b054e9e3120238f1/63f3e0ba605c2a218c60f27e_image%201.svg",
+      "website": "https://startupbootcamp.org/"
+    },
+    {
+      "name": "Startup Studio Indonesia",
+      "file": "logos/startup-studio-indonesia.png",
+      "source": "https://startupstudio.id/assets/img/logo/logo-ssi-horizontal.png",
+      "website": "https://startupstudio.id/",
+      "identity": "Confirmed by the user"
+    }
+  ],
+  "award": {
+    "name": "The Women\u2019s Tabloid Award",
+    "recognition": "Emerging Woman CEO \u2013 Real Estate 2024",
+    "recipient": "Josephine Petra Lovensa",
+    "source": "https://awards.womenstabloid.com/awards/leadership-awards-2024/",
+    "reference_page": "https://www.sechahome.com/"
+  }
+}

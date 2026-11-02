@@ -60,3 +60,29 @@
 @media (prefers-reduced-motion: reduce) {
   .kinetic-letter { animation: none !important; transform: none !important; }
 }
+
+/* Recognition details and locally hosted venture marks. */
+.award-detail { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 26px 0 32px; }
+.award-detail h3 { font-size: clamp(18px, 2vw, 26px); letter-spacing: -.04em; line-height: 1.25; }
+.award-detail p:last-child { color: var(--muted); font-size: 12px; margin: 10px 0 0; }
+.award-detail .text-link { flex-shrink: 0; }
+.venture-background { display: block; }
+.venture-background > span { display: block; max-width: none; }
+.venture-logos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+.venture-logos a { display: flex; align-items: center; justify-content: center; gap: 0; padding: 24px 20px; min-height: 108px; border: 1px solid var(--line); background: var(--paper); transition: border-color .2s; }
+.venture-logos a:hover { border-color: var(--text); }
+.venture-logos img { display: block; width: 100%; max-width: 170px; height: 42px; object-fit: contain; }
+.institutional-background { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-top: 28px; }
+.institutional-background span { color: var(--muted); font-size: 7px; letter-spacing: 1px; }
+.institutional-background strong { font-size: 13px; }
+@media (max-width: 640px) {
+  .award-detail { align-items: flex-start; flex-direction: column; gap: 15px; }
+  .venture-logos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .venture-logos a { min-height: 92px; padding: 18px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .awards-group span { white-space: normal; max-width: 100%; }
+}
+.venture-logos .venture-logo-dark { background: var(--text); border-color: var(--text); }
+.skip { opacity: 0; pointer-events: none; }
+.skip:focus { opacity: 1; pointer-events: auto; }
